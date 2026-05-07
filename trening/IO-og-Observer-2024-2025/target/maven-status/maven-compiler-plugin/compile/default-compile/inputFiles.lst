@@ -1,0 +1,16 @@
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/com/pharmacy/trening/partA/MedicationReader.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/com/pharmacy/trening/partA/PrescriptionWriter.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/com/pharmacy/trening/partB/AutoRefillListener.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/com/pharmacy/trening/partB/DrugStockManager.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/com/pharmacy/trening/partB/PharmacyWithStock.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/AlreadyDispensedException.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/DispensableUnit.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/DispensedRecord.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/IHasStockManager.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/IPharmacy.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/IStockListener.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/IStockManager.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/ISupplierService.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/InsufficientStockException.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/Medication.java
+/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/src/main/java/no/ntnu/tdt4100/pharmacy/ResultSet.java

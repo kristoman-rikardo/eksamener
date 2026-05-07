@@ -13,12 +13,14 @@ import shared.IAircraft;
 import shared.IBooking;
 import shared.IFlight;
 import shared.Passenger;
+import shared.TimeUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Airline {
-
+    private List<IFlight> flights = new ArrayList<>();
     // - TODO Add your fields here
 
     // A constructor to potentially initalize fields
@@ -32,7 +34,8 @@ public class Airline {
      * @param flight the flight to be added
      */
     public void addFlight(IFlight flight) {
-        // TODO - write your code here
+        if (flight == null) throw new IllegalArgumentException();
+        this.flights.add(flight);
     }
 
     /**
@@ -46,8 +49,10 @@ public class Airline {
      * @param booking the booking details
      */
     public void addBooking(IBooking booking) {
-        // TODO - write your code here
-    }
+        for (IFlight flight : booking) { // taking advantage of booking being iterable over flights
+            flight.addBooking(booking);
+            }
+        }
 
     /**
      * Applies the specified action to each booking of the given flight.
@@ -56,7 +61,7 @@ public class Airline {
      * @param action the action to apply to each booking
      */
     public void processFlightBookings(IFlight flight, Consumer<IBooking> action) {
-        // TODO - write your code here
+        flight.getBookings().forEach(action); // the consumer takes care of the action it self, we apply to all bookings of the flight
     }
 
     /**
@@ -72,9 +77,14 @@ public class Airline {
      *         departure time as the cancelled flight and have available seats
      */
     public List<IFlight> findReplacementFlights(IFlight flight) {
-        // TODO - write your code here
-        return null;
-    }
+        return flights.stream()
+            .filter(f -> f != flight) // cannot be the flight we're looking to replace
+            .filter(f -> f.getDestination().equals(flight.getDestination()))
+            .filter(f -> f.getOrigin().equals(flight.getOrigin()))
+            .filter(f -> f.hasAvailableSeats())
+            .filter(f -> TimeUtils.isWithin24Hours(flight.getTimeOfDeparture(), f.getTimeOfDeparture()))
+            .toList();    
+        }
 
     /**
      * A method to change the aircraft of a flight and cancel some bookings if the
@@ -86,7 +96,10 @@ public class Airline {
      * @param canceller the delegate object that decides which bookings to cancel
      */
     public void changeAircraft(IFlight flight, IAircraft aircraft, BookingCanceller canceller) {
-        // TODO - write your code here
+        flight.updateAircraft(aircraft, true);
+        if (flight.isOverbooked()) {
+            canceller.cancelBookings(new ArrayList<>(flight.getBookings()), flight.getMaxSeats() - flight.getNumberOfBookedSeats());
+        }
     }
 
     public static void main(String[] args) {

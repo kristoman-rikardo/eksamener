@@ -2,8 +2,16 @@ package part5;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import part1.Aircraft;
 import part3.Flight;
@@ -13,8 +21,12 @@ import shared.IBooking;
 import shared.IFlight;
 import shared.Passenger;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -34,8 +46,24 @@ public class BoardingPassService {
      * @param outputStream The OutputStream to which to write the boarding pass.
      */
     public static void printBoardingPass(IBooking booking, OutputStream outputStream) throws IOException {
-        // TODO - Write your code here
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            String pass = passBuilder(booking);
+            writer.write(pass);
+        } catch (Exception e) {
+            throw e;
+        }
 
+    }
+
+    public static String passBuilder(IBooking booking) {
+        if (booking == null) throw new IllegalArgumentException();
+        StringBuilder sb = new StringBuilder();
+        Iterator<IFlight> iterator = booking.iterator();
+        while (iterator.hasNext()) {
+            IFlight flight = iterator.next();
+            sb.append(flight.getOrigin() + " - " + flight.getDestination() + " - " + flight.getDuration() + "\n");
+        }
+        return booking.getPassenger().getName() + "\n" + booking.getBookingClass() + "\n" + sb.toString();
     }
 
     /**
@@ -51,7 +79,31 @@ public class BoardingPassService {
      *                                  flight.
      */
     public static void scanBoardingPass(IFlight flight, InputStream inputStream) throws IOException {
-        // TODO - Write your code here
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            int isValid = 0;
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            String[] parts = sb.toString().toLowerCase().trim().split("\n");
+            String checkName = parts[0].toLowerCase().trim();
+            ArrayList<String> validNames = new ArrayList<>(flight.getBookings().stream().map(b -> b.getPassenger().getName()).toList());
+            for (String validName : validNames) if (validName.toLowerCase().trim().equals(checkName)) isValid += 1;
+            
+            String checkClass = parts[1].toLowerCase().trim();
+            List<String> validClasses = new ArrayList<>(BookingClasses.getValidBookingClasses());
+            for (String validClass : validClasses) if (validClass.toLowerCase().trim().equals(checkClass)) isValid += 1;
+            
+            List<String> checkFlights = Arrays.asList(parts).subList(2, parts.length);
+            String validFlight = flight.getOrigin() + " - " + flight.getDestination() + " - " + flight.getDuration();
+            for (String checkFlight : checkFlights) if (checkFlight.toLowerCase().trim().equals(validFlight)) isValid += 1;
+
+            if (isValid < 3) throw new IllegalArgumentException();
+            
+        } catch (Exception e) {
+            throw e;
+        }
 
     }
 

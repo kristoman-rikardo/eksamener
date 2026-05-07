@@ -1,6 +1,6 @@
 package shared;
 
-public interface IBooking extends Iterable<IFlight> {
+public interface    IBooking extends Iterable<IFlight> {
     // Returns the passenger associated with this booking
     public Passenger getPassenger();
 

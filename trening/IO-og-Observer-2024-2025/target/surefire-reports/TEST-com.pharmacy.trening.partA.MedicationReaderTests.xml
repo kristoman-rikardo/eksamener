@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.pharmacy.trening.partA.MedicationReaderTests" time="0.045" tests="12" errors="5" skipped="0" failures="3">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/test-classes:/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/classes:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/home/kristofferswik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/home/kristofferswik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
+    <property name="java.vm.vendor" value="Red Hat, Inc."/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://www.redhat.com/"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GB"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-25-openjdk/lib"/>
+    <property name="sun.java.command" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/surefire/surefirebooter-20260506225430821_3.jar /home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/surefire 2026-05-06T22-54-30_673-jvmRun1 surefire-20260506225430821_1tmp surefire_0-20260506225430821_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/test-classes:/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/classes:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/home/kristofferswik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/home/kristofferswik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/kristofferswik"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-01-20"/>
+    <property name="java.home" value="/usr/lib/jvm/java-25-openjdk"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025/target/surefire/surefirebooter-20260506225430821_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="25.0.2+10"/>
+    <property name="user.name" value="kristofferswik"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.19.6-200.fc43.x86_64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="(Red_Hat-25.0.2.0.10-3)"/>
+    <property name="localRepository" value="/home/kristofferswik/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-25-openjdk&amp;version=42"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="25.0.2"/>
+    <property name="user.dir" value="/home/kristofferswik/Documents/Objekt/eksamener/trening/IO-og-Observer-2024-2025"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Red Hat, Inc."/>
+    <property name="java.vm.version" value="25.0.2+10"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="readMedications_skips_header_and_returns_correct_medications" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.016">
+    <error message="Cannot invoke &quot;no.ntnu.tdt4100.pharmacy.ResultSet.medications()&quot; because &quot;rs&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_skips_header_and_returns_correct_medications(MedicationReaderTests.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></error>
+  </testcase>
+  <testcase name="readMedications_reads_from_actual_csv_resource" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.002">
+    <error message="Cannot invoke &quot;no.ntnu.tdt4100.pharmacy.ResultSet.medications()&quot; because &quot;rs&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_reads_from_actual_csv_resource(MedicationReaderTests.java:129)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></error>
+  </testcase>
+  <testcase name="readMedications_records_error_line_numbers_correctly" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001">
+    <error message="Cannot invoke &quot;no.ntnu.tdt4100.pharmacy.ResultSet.medications()&quot; because &quot;rs&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_records_error_line_numbers_correctly(MedicationReaderTests.java:97)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></error>
+  </testcase>
+  <testcase name="parseLine_returns_null_when_name_is_empty" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001"/>
+  <testcase name="readMedications_propagates_IOException" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.002">
+    <failure message="Expected java.io.IOException to be thrown, but nothing was thrown." type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: Expected java.io.IOException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3111)
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_propagates_IOException(MedicationReaderTests.java:120)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></failure>
+  </testcase>
+  <testcase name="parseLine_returns_medication_for_valid_line" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001">
+    <failure message="expected: not &lt;null&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: not <null>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertNotNull.failNull(AssertNotNull.java:49)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:35)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:30)
+	at org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:300)
+	at com.pharmacy.trening.partA.MedicationReaderTests.parseLine_returns_medication_for_valid_line(MedicationReaderTests.java:27)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></failure>
+  </testcase>
+  <testcase name="parseLine_returns_null_when_id_not_parseable" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.0"/>
+  <testcase name="parseLine_returns_null_when_too_few_fields" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001"/>
+  <testcase name="parseLine_returns_null_when_dose_not_parseable" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.0"/>
+  <testcase name="parseLine_strips_quotes_from_name" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001">
+    <failure message="expected: not &lt;null&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: not <null>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertNotNull.failNull(AssertNotNull.java:49)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:35)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:30)
+	at org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:300)
+	at com.pharmacy.trening.partA.MedicationReaderTests.parseLine_strips_quotes_from_name(MedicationReaderTests.java:37)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></failure>
+  </testcase>
+  <testcase name="readMedications_handles_quoted_names_with_commas" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001">
+    <error message="Cannot invoke &quot;no.ntnu.tdt4100.pharmacy.ResultSet.medications()&quot; because &quot;rs&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_handles_quoted_names_with_commas(MedicationReaderTests.java:109)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></error>
+  </testcase>
+  <testcase name="readMedications_returns_empty_lists_for_header_only" classname="com.pharmacy.trening.partA.MedicationReaderTests" time="0.001">
+    <error message="Cannot invoke &quot;no.ntnu.tdt4100.pharmacy.ResultSet.medications()&quot; because &quot;rs&quot; is null" type="java.lang.NullPointerException"><![CDATA[java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_returns_empty_lists_for_header_only(MedicationReaderTests.java:79)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+]]></error>
+  </testcase>
+</testsuite>

@@ -1,0 +1,76 @@
+-------------------------------------------------------------------------------
+Test set: com.pharmacy.trening.partA.MedicationReaderTests
+-------------------------------------------------------------------------------
+Tests run: 12, Failures: 3, Errors: 5, Skipped: 0, Time elapsed: 0.045 s <<< FAILURE! -- in com.pharmacy.trening.partA.MedicationReaderTests
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_skips_header_and_returns_correct_medications -- Time elapsed: 0.016 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_skips_header_and_returns_correct_medications(MedicationReaderTests.java:71)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_reads_from_actual_csv_resource -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_reads_from_actual_csv_resource(MedicationReaderTests.java:129)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_records_error_line_numbers_correctly -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_records_error_line_numbers_correctly(MedicationReaderTests.java:97)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_propagates_IOException -- Time elapsed: 0.002 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: Expected java.io.IOException to be thrown, but nothing was thrown.
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:73)
+	at org.junit.jupiter.api.AssertThrows.assertThrows(AssertThrows.java:35)
+	at org.junit.jupiter.api.Assertions.assertThrows(Assertions.java:3111)
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_propagates_IOException(MedicationReaderTests.java:120)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.parseLine_returns_medication_for_valid_line -- Time elapsed: 0.001 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: not <null>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertNotNull.failNull(AssertNotNull.java:49)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:35)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:30)
+	at org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:300)
+	at com.pharmacy.trening.partA.MedicationReaderTests.parseLine_returns_medication_for_valid_line(MedicationReaderTests.java:27)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.parseLine_strips_quotes_from_name -- Time elapsed: 0.001 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: not <null>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertNotNull.failNull(AssertNotNull.java:49)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:35)
+	at org.junit.jupiter.api.AssertNotNull.assertNotNull(AssertNotNull.java:30)
+	at org.junit.jupiter.api.Assertions.assertNotNull(Assertions.java:300)
+	at com.pharmacy.trening.partA.MedicationReaderTests.parseLine_strips_quotes_from_name(MedicationReaderTests.java:37)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_handles_quoted_names_with_commas -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_handles_quoted_names_with_commas(MedicationReaderTests.java:109)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+
+com.pharmacy.trening.partA.MedicationReaderTests.readMedications_returns_empty_lists_for_header_only -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "no.ntnu.tdt4100.pharmacy.ResultSet.medications()" because "rs" is null
+	at com.pharmacy.trening.partA.MedicationReaderTests.readMedications_returns_empty_lists_for_header_only(MedicationReaderTests.java:79)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1604)
+

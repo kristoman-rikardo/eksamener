@@ -1,6 +1,7 @@
 package part3;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class Flight implements IFlight {
     private final int duration;
     private final int miles;
     private final LocalDateTime timeOfDeparture; // The time of departure for this flight
-    // - TODO Add your fields here
+    private List<IBooking> bookings = new ArrayList<>(); // - TODO Add your fields here
 
     /**
      * Constructs a Flight object with an origin, a destination, a flight number, an
@@ -122,8 +123,7 @@ public class Flight implements IFlight {
      * 
      */
     public double getCarbonOffset() {
-        // TODO - Write your code here
-        return 0;
+        return this.aircraft.getEmission() * getMiles();
     }
 
     /**
@@ -132,8 +132,7 @@ public class Flight implements IFlight {
      * @return The maximum number of seats available on this flight.
      */
     public int getMaxSeats() {
-        // TODO - Write your code here
-        return 0;
+        return this.aircraft.getSeats();
     }
 
     /**
@@ -145,8 +144,7 @@ public class Flight implements IFlight {
      * @see Booking#isCancelled()
      */
     public int getNumberOfBookedSeats() {
-        // TODO - write your code here
-        return 0;
+        return getMaxSeats() - (this.bookings.size() + getNumberOfCancelled()); // max capacity - already booked + cancelled freeing the capacity
     }
 
     /**
@@ -158,8 +156,7 @@ public class Flight implements IFlight {
      * @see Booking#isCancelled()
      */
     public boolean hasAvailableSeats() {
-        // TODO - Write your code here
-        return false;
+        return (getNumberOfBookedSeats() > 0);
     }
 
     /**
@@ -172,7 +169,9 @@ public class Flight implements IFlight {
      *                               available
      */
     public void addBooking(IBooking booking) {
-        // TODO - Write your code here
+        if (booking == null) throw new IllegalArgumentException();
+        if (!hasAvailableSeats()) throw new IllegalStateException();
+        this.bookings.add(booking);
     }
 
     /**
@@ -181,8 +180,7 @@ public class Flight implements IFlight {
      * @return The list of bookings made to this flight.
      */
     public List<IBooking> getBookings() {
-        // TODO - Write your code here
-        return null;
+        return this.bookings;
     }
 
     /**
@@ -191,8 +189,7 @@ public class Flight implements IFlight {
      *         flight, false otherwise
      */
     public boolean hasSameRoute(IFlight other) {
-        // TODO - Write your code here
-        return false;
+        return (this.getOrigin().equals(other.getOrigin()) && this.getDestination().equals(other.getDestination()));
     }
 
     /**
@@ -212,7 +209,8 @@ public class Flight implements IFlight {
      *                                  is false
      */
     public void updateAircraft(IAircraft aircraft, boolean forceChange) {
-        // TODO - Write your code here
+        if (aircraft == null || (!forceChange && aircraft.getSeats() < getNumberOfBookedSeats())) throw new IllegalArgumentException();
+        this.aircraft = aircraft; // if forced or sufficient capacity
     }
 
     /**
@@ -225,8 +223,13 @@ public class Flight implements IFlight {
      * @see Booking#isCancelled()
      */
     public boolean isOverbooked() {
-        // TODO - write your code here
-        return false;
+        return (getNumberOfBookedSeats() < 0);
+    }
+
+    public int getNumberOfCancelled() {
+        int n = 0;
+        for (IBooking booking : bookings) if (booking.isCancelled()) n++;
+        return n;
     }
 
     public static void main(String[] args) {

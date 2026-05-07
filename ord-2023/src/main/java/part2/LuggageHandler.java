@@ -1,10 +1,16 @@
 package part2;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import shared.Luggage;
 
 public class LuggageHandler {
 
-    // - TODO Add your fields here
+    private final int maxWeight;
+    private Map<String, List<Luggage>> luggageMap = new HashMap<>();
 
     /**
      * Constructs a LuggageHandler object with a given maximum weight of luggage.
@@ -14,7 +20,8 @@ public class LuggageHandler {
      * @throws IllegalArgumentException If the maximum weight is below 0
      */
     public LuggageHandler(int maxWeight) {
-        // TODO - Write your code here
+        if (maxWeight < 0) throw new IllegalArgumentException();
+        this.maxWeight = maxWeight;
     }
 
     /**
@@ -30,7 +37,15 @@ public class LuggageHandler {
      *                                  allowed.
      */
     public void addLuggage(String flightNumber, Luggage luggage) {
-        // TODO - Write your code here
+        if (flightNumber == null || luggage == null || luggage.getWeight() > this.maxWeight) throw new IllegalArgumentException();
+        if (luggageMap.containsKey(flightNumber)) {
+            ArrayList<Luggage> inter = new ArrayList<>(luggageMap.get(flightNumber));
+            inter.add(luggage);
+            luggageMap.put(flightNumber, inter);
+        }
+        else {
+            luggageMap.put(flightNumber, new ArrayList<>(List.of(luggage)));
+        }
     }
 
     /**
@@ -44,8 +59,15 @@ public class LuggageHandler {
      * @return True if the removal was successful, false otherwise.
      */
     public boolean removeLuggage(String flightNumber, Luggage luggage) {
-        // TODO - Write your code here
-        return false; // Dummy value
+        if (flightNumber != null && luggage != null) {
+            if (luggageMap.containsKey(flightNumber) && luggageMap.get(flightNumber).contains(luggage)) {
+                ArrayList<Luggage> inter = new ArrayList<>(luggageMap.get(flightNumber));
+                inter.remove(luggage);
+                luggageMap.put(flightNumber, inter);
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -58,8 +80,11 @@ public class LuggageHandler {
      *         integer.
      */
     public int getTotalWeight(String flightNumber) {
-        // TODO - Write your code here
-        return 0; // Dummy value
+        if (flightNumber == null || !luggageMap.containsKey(flightNumber)) return 0;
+        ArrayList<Luggage> inter = new ArrayList<>(luggageMap.get(flightNumber));
+        int weight = 0;
+        for (Luggage l : inter) weight += l.getWeight();
+        return weight;
     }
 
     public static void main(String[] args) {

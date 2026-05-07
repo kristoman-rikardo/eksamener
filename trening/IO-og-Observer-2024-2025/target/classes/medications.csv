@@ -1,0 +1,10 @@
+id,name,manufacturer,dose_mg
+1,Paracetamol,GSK,500.0
+2,Ibuprofen,Nycomed,400.0
+3,"Amoxicillin, oral",Pfizer,250.0
+4,Insulin injection,NovoNordisk,100.0
+5,BADDATA
+6,Metformin,AstraZeneca,850.0
+7,,Pfizer,200.0
+8,Warfarin injection,Bayer,5.0
+9,Diazepam,Roche,ABC

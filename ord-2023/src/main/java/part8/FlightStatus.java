@@ -63,9 +63,9 @@ public class FlightStatus {
      * @throws IllegalArgumentException If the provided status is not valid.
      */
     public void setStatus(String status) {
-        notifyObservers(status);
         if (VALID_STATUSES.contains(status)) {
             this.status = status;
+            notifyObservers(status);
         } else {
             throw new IllegalArgumentException("Invalid flight status");
         }

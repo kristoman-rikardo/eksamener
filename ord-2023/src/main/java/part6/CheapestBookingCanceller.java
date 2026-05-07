@@ -13,6 +13,7 @@ import shared.Passenger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 // A class that implements the booking canceller interface
 // This class cancels the bookings that have the lowest price
@@ -24,8 +25,14 @@ public class CheapestBookingCanceller implements BookingCanceller {
    * @param numberToCancel the number of bookings to cancel, can be assumed to be larger than 0
    */
   public void cancelBookings(List<IBooking> bookings, int numberToCancel) {
-    // TODO - Write your code here
-  }
+    if (bookings == null || numberToCancel < 0 || numberToCancel > bookings.size()) {
+        throw new IllegalArgumentException();
+    }
+    bookings.stream()
+        .sorted(Comparator.comparingInt(IBooking::getPrice))
+        .limit(numberToCancel)
+        .forEach(IBooking::cancelBooking);
+}
 
   public static void main(String[] args) {
     // Create some passenger objects

@@ -1,6 +1,7 @@
 package part4;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -14,9 +15,12 @@ import shared.Passenger;
 
 public class Booking implements IBooking {
 
+    // private final List<String> VALID_CLASSES =  new ArrayList<>(List.of("First", "Business", "Economy"));
     private Passenger passenger;
     private int price;
     private String bookingClass;
+    private List<IFlight> flights = new ArrayList<>();
+    private boolean isCancelled;
     // - TODO Add additional fields here
 
     /**
@@ -29,10 +33,12 @@ public class Booking implements IBooking {
      * @param bookingClass The booking class associated with this booking.
      * @param price        The price associated with this booking.
      */
-    public Booking(Passenger passenger, List<IFlight> flights, String bookingClass, int price) {
+    public Booking(Passenger passenger, final List<IFlight> flights, String bookingClass, int price) {
         this.price = price;
         this.passenger = passenger;
         this.setBookingClass(bookingClass);
+        this.flights = flights;
+        this.isCancelled = false; // cannot iniate a cancelled flight
         // TODO - Write additional code here
     }
 
@@ -72,7 +78,8 @@ public class Booking implements IBooking {
      * @throws IllegalArgumentException if the booking class is invalid
      */
     public void setBookingClass(String bookingClass) {
-        // TODO - Write your code here
+        if (bookingClass == null || !BookingClasses.getValidBookingClasses().contains(bookingClass)) throw new IllegalArgumentException();
+        this.bookingClass = bookingClass;
     }
 
     /**
@@ -83,8 +90,8 @@ public class Booking implements IBooking {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public IFlight getFlight(int index) {
-        // TODO - Write your code here
-        return null;
+        if (!(index >= 0 && index < this.getNumberOfFlights())) throw new IndexOutOfBoundsException();
+        return this.flights.get(index);
     }
 
     /**
@@ -93,8 +100,7 @@ public class Booking implements IBooking {
      * @return the number of flights in this booking
      */
     public int getNumberOfFlights() {
-        // TODO - Write your code here
-        return 0;
+        return this.flights.size();
     }
 
     /**
@@ -102,16 +108,14 @@ public class Booking implements IBooking {
      *         A newly created booking is never cancelled
      */
     public boolean isCancelled() {
-        // TODO - Write your code here
-        return false;
+        return this.isCancelled;
     }
 
     /**
      * Cancels the booking
      */
     public void cancelBooking() {
-        // TODO - Write your code here
-
+        this.isCancelled = true;
     }
 
     /**
@@ -132,8 +136,16 @@ public class Booking implements IBooking {
      * @return The EU 261 compensation for the given booking in USD.
      */
     public int calculateEu261Compensation() {
-        // TODO - Write your code here
-        return 0;
+        if (!isCancelled()) return 0; // no compensation if you take the flight
+        int maxMiles = 0;
+        for (IFlight flight : flights) {
+            if (flight.getMiles() > maxMiles) {
+                maxMiles = flight.getMiles();
+            }
+        }
+        if (maxMiles > 2175) return 600;
+        else if (maxMiles > 930) return 400;
+        else {return 250;}
     }
 
     /**
@@ -144,9 +156,12 @@ public class Booking implements IBooking {
      */
     @Override
     public Iterator<IFlight> iterator() {
-        // TODO - Write your code here
-        return null;
+        return flights.iterator();
     }
+
+    // public List<IFlight> getFlights() {
+    //     return this.flights;
+    // }
 
     /**
      * Returns a string representation of the booking object, which includes

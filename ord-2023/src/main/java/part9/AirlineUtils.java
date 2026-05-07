@@ -2,12 +2,16 @@ package part9;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import part1.Aircraft;
 import part3.Flight;
 import shared.IFlight;
+import shared.TimeUtils;
 
 public class AirlineUtils {
 
@@ -19,8 +23,7 @@ public class AirlineUtils {
      * @return a list of flights that satisfy the given predicate
      */
     public static List<IFlight> getFlightsByPredicate(List<IFlight> flights, Predicate<IFlight> predicate) {
-        // TODO - write your code here
-        return null;
+        return flights.stream().filter(predicate).toList();
     }
 
     /**
@@ -31,8 +34,16 @@ public class AirlineUtils {
      * @return the busiest airport
      */
     public static String getBusiestAirport(List<IFlight> flights) {
-        // TODO - write your code here
-        return null;
+        Map<String, Integer> counting = new HashMap<>();
+        for (IFlight flight : flights)  {
+            String dest = flight.getDestination();
+            String org = flight.getOrigin();
+            if (counting.containsKey(dest)) counting.put(dest, counting.get(dest) + 1);
+            else {counting.put(dest, 1);}
+            if (counting.containsKey(org)) counting.put(org, counting.get(org) + 1);
+            else {counting.put(org, 1);}
+        }
+        return counting.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(null);
     }
 
     /**
@@ -44,8 +55,13 @@ public class AirlineUtils {
      * @return true if all flights are connected, false otherwise
      */
     public static boolean isConnectedFlights(List<IFlight> flights) {
-        // TODO - write your code here
-        return false;
+        for (int i = 0; i < flights.size() - 1; i++) {
+            IFlight thisFlight = flights.get(i);
+            IFlight nextFlight = flights.get(i+1);
+            if (!thisFlight.getDestination().equals(nextFlight.getOrigin())) return false;
+            if (!TimeUtils.isWithin24Hours(thisFlight.getTimeOfDeparture(), nextFlight.getTimeOfDeparture())) return false;; 
+        }
+        return true;
     }
 
     public static void main(String[] args) {

@@ -17,7 +17,7 @@ public class FlightStatusObserverImpl implements FlightStatusObserver {
      */
     @Override
     public void updateFlightStatus(String flightNumber, String status) {
-        flightStatuses.put(flightNumber, flightStatuses.get(flightNumber));
+        flightStatuses.put(flightNumber, status);
         System.out.println("Flight " + flightNumber + " status updated to: " + status);
         sendNotification(flightNumber, status);
     }

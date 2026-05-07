@@ -3,7 +3,11 @@ package part1;
 import shared.IAircraft;
 
 public class Aircraft implements IAircraft {
-
+    private String type;
+    private int seats;
+    private double emission;
+    private final double fuelCapacity;
+    private double fuelLevel;
     // TODO - add your fields here
 
     /**
@@ -22,7 +26,13 @@ public class Aircraft implements IAircraft {
      * 
      */
     public Aircraft(String type, int seats, double emission, double fuelCapacity) {
-        // TODO: write your code here
+        if (seats <= 0 || emission <= 0 || fuelCapacity <= 0) throw new IllegalArgumentException();
+        this.type = type;
+        this.seats = seats;
+        this.emission = emission;
+        this.fuelCapacity = fuelCapacity;
+        this.fuelLevel = fuelCapacity;
+
     }
 
     /**
@@ -31,8 +41,7 @@ public class Aircraft implements IAircraft {
      * @return the type of the aircraft
      */
     public String getType() {
-        // TODO: write your code here
-        return null;
+        return this.type;
     }
 
     /**
@@ -41,8 +50,7 @@ public class Aircraft implements IAircraft {
      * @return the number of seats in the aircraft
      */
     public int getSeats() {
-        // TODO: write your code here
-        return 0;
+        return this.seats;
     }
 
     /**
@@ -51,8 +59,7 @@ public class Aircraft implements IAircraft {
      * @return the carbon emission per mile in kilograms
      */
     public double getEmission() {
-        // TODO: write your code here
-        return 0;
+        return this.emission;
     }
 
     /**
@@ -61,8 +68,7 @@ public class Aircraft implements IAircraft {
      *         the fuel level is the same as the fuel capacity.
      */
     public double getFuelLevel() {
-        // TODO: write your code here
-        return 0;
+        return this.fuelLevel;
     }
 
     /**
@@ -76,7 +82,8 @@ public class Aircraft implements IAircraft {
      *                                  negative
      */
     public void flightCompleted(double fuelUsed) {
-        // TODO: write your code here
+        if (fuelUsed > getFuelLevel() || fuelUsed < 0) throw new IllegalArgumentException();
+        this.fuelLevel -= fuelUsed;
     }
 
     /**
@@ -84,7 +91,7 @@ public class Aircraft implements IAircraft {
      * capacity input in the constructor
      */
     public void refillAircraft() {
-        // TODO: write your code here
+        this.fuelLevel = this.fuelCapacity;
     }
 
     /**
@@ -97,9 +104,8 @@ public class Aircraft implements IAircraft {
      *         less than, equal to, or more than the specified aircraft
      */
     @Override
-    public int compareTo(IAircraft other) {
-        // TODO: write your code here
-        return 0;
+    public int compareTo(IAircraft other) { // assume this aircraft is .this
+        return this.getSeats() - other.getSeats();
     }
 
     /**
@@ -110,8 +116,7 @@ public class Aircraft implements IAircraft {
      * @return the ratio of the carbon emission per seat for this aircraft
      */
     public double getEmissionPerSeat() {
-        // TODO: write your code here
-        return 0;
+        return this.getEmission() / (double) this.getSeats();
     }
 
     /**
@@ -124,8 +129,7 @@ public class Aircraft implements IAircraft {
      */
     @Override
     public String toString() {
-        // TODO: write your code here
-        return null;
+        return "" + getType() + " (" + getSeats() + ") - " + getEmission() + " kg/mile ";
     }
 
     public static void main(String[] args) {
