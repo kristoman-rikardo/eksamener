@@ -1,4 +1,4 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 public class Task07 {
 
@@ -18,12 +18,15 @@ public class Task07 {
         // return number^2;
         // return 2^number;
         // if(number == 0) return Math.sqrt((double) number);
-        // return Math.pow((double) number, 2);
+        return Math.pow((double) number, 2);
 
         }
         return 0.0; // This line is only in place to make the code compile, do not remove it
     }
 
+    // public static void main(String[] args) {
+    //     System.out.println(doubleOrNothing(3, true));
+    // }
 }
 
 

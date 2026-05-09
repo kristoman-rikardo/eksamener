@@ -1,4 +1,4 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class Task06 implements ITask06 {
         // area = shapes.get(2).calculateArea();
         // area = shapes.get(1).calculateArea();
         // area = ((Shape)shapes.get(1)).calculateArea();
-        // area = ((Rectangle)shapes.get(1)).calculateArea();
+        area = ((Rectangle)shapes.get(1)).calculateArea();
         // area = ((Rectangle)shapes.get(2)).calculateArea();
 
         return area;

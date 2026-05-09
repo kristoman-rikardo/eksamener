@@ -37,6 +37,17 @@ public class AssemblyLine {
      * @see AssemblyLine#isStepAdded(AssemblyStep)
      */
     public void addAssemblyStep(AssemblyStep step) {
+        if (step == null || isStepAdded(step)) throw new IllegalArgumentException();
+        if (firstAssemblyStep == null) {
+            this.firstAssemblyStep = step;
+        }
+        else {
+            AssemblyStep thisStep = this.firstAssemblyStep; // start from the first of the list
+            while (thisStep.getNext() != null) { // walk our way down to the last, stop at the end
+                thisStep = thisStep.getNext();
+            }
+            thisStep.setNext(step); // add to the end, where the former element were null
+        }
         // TODO Implement the method to behave according to JavaDoc
     }
 
@@ -50,9 +61,17 @@ public class AssemblyLine {
      * @see AssemblyStep#getStepId()
      * @see AssemblyStep#equals(Object)
      */
-    boolean isStepAdded(AssemblyStep step) {
+    public boolean isStepAdded(AssemblyStep step) {
+        if (step == null) throw new IllegalArgumentException();
+        if (this.firstAssemblyStep == null) return false; // if i\not instantiated yet
+        if (this.firstAssemblyStep.equals(step)) return true;
+        AssemblyStep thisStep = this.firstAssemblyStep; // start from the first of the list
+        while (thisStep.getNext() != null) { // walk our way down to the last, stop at the end
+            thisStep = thisStep.getNext(); // already checked first elem, so we can skip to second
+            if (thisStep.equals(step)) return true;
+        }
+        return false; // been through the entire list with no duplicates
         // TODO Implement the method to behave according to JavaDoc
-        return false;
     }
 
 
@@ -62,6 +81,12 @@ public class AssemblyLine {
      * @see AssemblyStep#assemble()
      */
     public void assembleAll() {
+        AssemblyStep thisStep = this.firstAssemblyStep; // start from the first of the list
+        while (thisStep.getNext() != null) { // walk our way down to the last, stop at the end
+            thisStep.assemble();
+            thisStep = thisStep.getNext(); // skip to nest
+        }
+        thisStep.assemble(); // assemble last one
         // TODO Implement the method to behave according to JavaDoc
     }
 }

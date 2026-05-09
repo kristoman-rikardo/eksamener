@@ -1,6 +1,8 @@
 package com.mercedesbenz.part3;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -20,8 +22,8 @@ import no.ntnu.tdt4100.part3.SecretCode;
  * It doesn't require creation of a class instance to be invoked.
  */
 @SuppressWarnings("unused")
-public final class GlobalResearchArchive {
-    
+public final class GlobalResearchArchive implements SecretCode {
+    public static List<UUID> reportIDs = new ArrayList<>();
     // TODO Implement necessary fields and methods
 
     private GlobalResearchArchive() {} // DO NOT REMOVE THIS LINE
@@ -43,6 +45,15 @@ public final class GlobalResearchArchive {
      * @see no.ntnu.tdt4100.part3.ResearchReport
      */
     //TODO Implement the submitResearchReport class method according to the description in JavaDoc
+
+    public static boolean submitResearchReport(ResearchReport report) {
+        if (report == null) throw new IllegalArgumentException();
+        if  (!isReportInArchive(report.reportId())) {
+            reportIDs.add(report.reportId());
+            return true;
+        }
+        return false;
+    }
    
 
    /**
@@ -57,6 +68,11 @@ public final class GlobalResearchArchive {
     * @see no.ntnu.tdt4100.part3.ResearchReport#reportId()
     */
    //TODO Implement the isReportInArchive class method according to the description in JavaDoc
+
+   public static boolean isReportInArchive(UUID reportID) {
+        if (reportID == null) throw new IllegalArgumentException();
+        return reportIDs.contains(reportID);
+   }
   
 
     /**
@@ -68,6 +84,9 @@ public final class GlobalResearchArchive {
      */
     // TODO Implement the getNumberOfSubmittedResearchReports() class method according to the description in JavaDoc
    
+    public static long getNumberOfSubmittedResearchReports() {
+        return (long) reportIDs.size();
+    }
 
     /**
      * This method should be named <code>wipe</code>
@@ -87,5 +106,15 @@ public final class GlobalResearchArchive {
      * @throws SecurityException if the secret code is invalid
      */
     // TODO Implement the wipe() method according to the description in JavaDoc
+
+    public static void wipe(char[] secretCode) {
+        if (secretCode == null) throw new IllegalArgumentException();
+        if (secretCode.equals(WIPE_CODE)) {
+            reportIDs.clear();
+        }
+        else {
+            throw new SecurityException();
+        }
+    }
    
 }

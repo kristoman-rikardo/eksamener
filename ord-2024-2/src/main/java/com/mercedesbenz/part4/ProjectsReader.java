@@ -1,10 +1,19 @@
 package com.mercedesbenz.part4;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+// import com.mercedesbenz.part3.GlobalResearchArchive;
+
+import no.ntnu.tdt4100.part2.Project;
+import no.ntnu.tdt4100.part4.LineReadError;
 import no.ntnu.tdt4100.part4.ResultSet;
 
 public class ProjectsReader {
@@ -52,8 +61,36 @@ public class ProjectsReader {
      * @see ZonedDateTime#parse(CharSequence)
      * @see ProjectsReaderTests
      */
-    public static ResultSet readProjects(InputStream stream) {
-        // TODO Implement the method according to the description in the JavaDoc
-        return null;
+    public static ResultSet readProjects(InputStream stream) throws IOException {
+        if (stream == null) throw new IllegalArgumentException();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        String line;
+        Set<Project> projects = new HashSet<>();
+        Set<UUID> projectIDs = new HashSet<>();
+        Set<LineReadError> errors = new HashSet<>();
+        reader.readLine(); // skip header
+        int i = 1;
+        while ((line = reader.readLine()) != null) {
+            i++;
+            try {
+                String[] parts = line.split(CSV_SPLIT_REGEX); // regex handles the quote issues 
+                UUID id = UUID.fromString(parts[0]);
+                String name = parts[1].replace('"', ' ').trim();
+                Double budgetInMillions = Double.parseDouble(parts[2]);
+                LocalDate startDate = LocalDate.parse(parts[3]);
+                LocalDate estimatedEndDate = LocalDate.parse(parts[4]);
+                if (projectIDs.contains(id)) {
+                    errors.add(new LineReadError(i, "Duplicate project"));
+                    continue;
+                }
+                Project project = new Project(id, name, budgetInMillions, startDate, estimatedEndDate);
+                projects.add(project);
+                projectIDs.add(id); 
+            } catch (Exception e) {
+                errors.add(new LineReadError(i, e.getMessage()));
+            }
+        }
+        reader.close();
+        return new ResultSet(projects, errors);
     }
 }

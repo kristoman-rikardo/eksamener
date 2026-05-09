@@ -1,4 +1,4 @@
-package test.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,5 +1,9 @@
 package com.mercedesbenz.part3;
 
+import java.time.ZonedDateTime;
+
+import no.ntnu.tdt4100.part3.AssemblyStep;
+
 /**
  * Welding the chassis is a production step in the production line.
  * 
@@ -21,6 +25,41 @@ package com.mercedesbenz.part3;
  * @see no.ntnu.tdt4100.part3.AssemblyStep#simulateTimePassing()
  */
 // TODO Implement the AssemblePistonsStep class here according to JavaDoc   
-class AssemblePistonsStep {
+public class AssemblePistonsStep extends AssemblyStep {
+
+    public AssemblePistonsStep(String stepId) {
+        super(stepId, true);
+    }
+
+    /**
+     * This method represents the assembly.
+     * When assemble is called, the assembly step is actually executed in the assembly line.
+     * Examples of assembly steps can be - Assemble engine block, assemble piston, 
+     * assemble crankshaft, assemble timing belt, etc.
+     * 
+     * When the assembly starts, the startTime must be set to {@link java.time.ZonedDateTime#now()}.
+     * When the assembly execution is finished, its endTime must also be set.
+     * 
+     * When this is done, the factory can create statistics how long each step take to execute.
+     * Ie can installation of a motor take an hour when there are many different steps involved.
+     * 
+     * Behavioural requirements after this method is called
+     * <ul>
+     * <li>The assembly step should have a set start time and an end time according to the above description.</li>
+     * <li>The endTime can not be set in the future</li>
+     * <li>Every assembly step takes at least 100ms to execute. Therefore, the start time must be before the end time by at least 100ms. Tip: 
+     * Use {@link AssemblyStep#simulateTimePassing()} in the implementation to simulate that performing the step takes some time.</li>
+     * </ul>
+     * 
+     * @see AssemblyStep#startTime
+     * @see AssemblyStep#endTime
+     * @see AssemblyStep#simulateTimePassing()
+     */
+
+    public void assemble() {
+        super.startTime = ZonedDateTime.now();
+        simulateTimePassing();
+        super.endTime = ZonedDateTime.now();
+    }
  
 }

@@ -1,3 +1,6 @@
-public class Class2 {
+package com.mercedesbenz.part1;
+
+public interface Class2 {
+
     
-}
+} 

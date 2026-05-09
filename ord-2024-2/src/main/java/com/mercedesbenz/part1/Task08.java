@@ -1,6 +1,8 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import no.ntnu.tdt4100.part1.AbstractTask08;
 
@@ -21,11 +23,11 @@ public class Task08 extends AbstractTask08 {
         // B_fillB();
         // C_fillC();
         // D_fillD();
-        // E_fillE();
-        // F_fillF();
+        E_fillE();
+        F_fillF();
     }
 
-    public String[] fillA(String[] arrayToFill) {
+     public static String[] fillA(String[] arrayToFill) {
         String toFill = "FILL";
         var a = Arrays.asList(arrayToFill);
         a.add(toFill);
@@ -35,7 +37,7 @@ public class Task08 extends AbstractTask08 {
         return (String[])a.toArray();
     }
 
-    public String[] fillB(String[] arrayToFill) {
+     public static String[] fillB(String[] arrayToFill) {
         String toFill = "FILL";
         arrayToFill[5] = toFill;
         arrayToFill[6] = toFill;
@@ -46,7 +48,7 @@ public class Task08 extends AbstractTask08 {
         return arrayToFill;
     }
 
-    public String[] fillC(String[] arrayToFill) {
+     public static String[] fillC(String[] arrayToFill) {
         String toFill = "FILL";
         arrayToFill[6] = toFill;
         arrayToFill[7] = toFill;
@@ -57,7 +59,7 @@ public class Task08 extends AbstractTask08 {
         return arrayToFill;
     }
 
-    public String[] fillD(String[] arrayToFill) {
+     public static String[] fillD(String[] arrayToFill) {
         String toFill = "FILL";
         for(int i = 0; i < arrayToFill.length; i++) {
             if (arrayToFill[i] != null) {
@@ -67,15 +69,30 @@ public class Task08 extends AbstractTask08 {
         return arrayToFill;
     }
 
-    public String[] fillE(String[] arrayToFill) {
+     public static String[] fillE(String[] arrayToFill) {
         String toFill = "FILL";
         Arrays.fill(arrayToFill, toFill);
         return arrayToFill;
     }
 
-    public String[] fillF(String[] arrayToFill) {
+     public static String[] fillF(String[] arrayToFill) {
         String toFill = "FILL";
         Arrays.setAll(arrayToFill, p -> toFill);
         return arrayToFill;
+    }
+    
+    public static void main(String[] args) {
+        // System.out.println(fillA(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}));
+        // System.out.println(fillB(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}).toString());
+        // System.out.println(fillC(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}));
+        // System.out.println(fillD(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}).toString());
+        System.out.println(new ArrayList<>(List.of(fillD(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}))));
+        System.out.println(new ArrayList<>(List.of(fillE(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}))).toString());
+        System.out.println(new ArrayList<>(List.of(fillF(new String[]{"FILL", null, "FILL", null, "FILL", "FILL", null, "FILL", "3", "null"}))).toString());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

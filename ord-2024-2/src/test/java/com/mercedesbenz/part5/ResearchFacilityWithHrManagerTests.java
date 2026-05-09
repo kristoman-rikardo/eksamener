@@ -149,11 +149,13 @@ class ResearchFacilityWithHrManagerTests {
         verify(humanResourceManager, times(0)).fire(person1);
     }
 
-    @Test 
+    @Test
     void endProject_should_fire_people_when_project() throws CanNotStartProjectException {
         List<Project> list = new ArrayList<>();
         list.add(project1);
         when(delegate.getProjects()).thenReturn(list);
+        when(humanResourceManager.isHired(person1)).thenReturn(true);
+        when(humanResourceManager.isHired(person2)).thenReturn(true);
         researchFacilityWithHrManager.endProject(project1.projectId(), List.of(person1, person2));
 
         assertEquals(0, researchFacilityWithHrManager.getProjects().size());
@@ -164,9 +166,9 @@ class ResearchFacilityWithHrManagerTests {
 
     @Test
     void getHumanResourceManager_should_not_be_null() {
-        assertFalse(true);
+        // assertFalse(true);
         assertNotNull(researchFacilityWithHrManager.getHumanResourceManager());
-        assertEquals(researchFacilityWithHrManager, researchFacilityWithHrManager.getHumanResourceManager());
+        assertEquals(humanResourceManager, researchFacilityWithHrManager.getHumanResourceManager());
     }
 
 

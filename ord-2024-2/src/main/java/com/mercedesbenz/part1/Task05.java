@@ -1,4 +1,4 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,9 +30,12 @@ public class Task05 {
         // return (int) Arrays.asList(numbers).stream().count();
         // return new HashSet<Integer>(IntStream.of(numbers).boxed().toList()).stream().collect(Collectors.summingInt(Integer::intValue));
         // return Arrays.stream(numbers).filter(n -> n % 2 == 0).distinct().sum();
-        // return list.stream().filter(number -> Collections.frequency(list, number) == 1 && (number & 1) != 1).mapToInt(x -> (int) x).sum();
+        return list.stream().filter(number -> Collections.frequency(list, number) == 1 && (number & 1) != 1).mapToInt(x -> (int) x).sum();
 
-        return -1; // This line is only in place to make the code compile, remove it after you uncomment above
+        // return -1; // This line is only in place to make the code compile, remove it after you uncomment above
     }
 
+    // public static void main(String[] args) {
+    //     System.out.println(sum(new int[]{2, 3, 5, 6, 5, 3, 2, 4}));
+    // }
 }

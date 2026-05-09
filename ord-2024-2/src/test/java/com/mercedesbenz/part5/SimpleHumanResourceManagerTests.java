@@ -5,14 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+// import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+// import static org.mockito.Mockito.when;
 
-import java.util.Optional;
+// import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +39,7 @@ class SimpleHumanResourceManagerTests {
         listener2 = mock();
 
         manager = new SimpleHumanResourceManager(0, 0);
-        assertFalse(true);
+        // assertFalse(true);
         person = new Person("a", Role.DEPARTMENT_LEAD);
     }
 

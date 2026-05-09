@@ -1,4 +1,4 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 
 public class Task09 {
@@ -23,9 +23,9 @@ public class Task09 {
         //     return a + b + c + d;
         // }
 
-        // if (c >= b && d == c && b > a) {
-        //     return (long) ((long) d) + a + b + c;
-        // }
+        if (c >= b && d == c && b > a) {
+            return (long) ((long) d) + a + b + c;
+        }
 
         // if (a <= b && b <= c && c <= d) {
         //     return a + b + c;

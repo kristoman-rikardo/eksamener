@@ -1,7 +1,10 @@
 package com.mercedesbenz.part4;
 
+// import java.io.BufferedOutputStream;
+// import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
+// import java.io.OutputStreamWriter;
 import java.util.List;
 
 import no.ntnu.tdt4100.part3.ResearchReport;
@@ -42,7 +45,25 @@ public class ReportsListWriter {
      * 
      * @see ReportsListWriterTests
      */
-    public static void write(List<ResearchReport> reports, OutputStream outputStream) {
-        // TODO Implement this method according to the description in JavaDoc
+    public static void write(List<ResearchReport> reports, OutputStream outputStream) throws IOException {
+        // try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) { // flush handled through try with resoruces
+        //     String content = buildString(reports);
+        //     writer.write(content);
+        // } test does unfortunately not pass with buffered writso i hav eto do it olds school
+        String content = buildString(reports);
+        outputStream.write(content.getBytes());
+        outputStream.flush();
+    }
+
+    public static String buildString(List<ResearchReport> reports) {
+        StringBuilder sb = new StringBuilder();
+        for (ResearchReport report : reports) {
+            sb.append(report.reportId() + ";" + report.name() + ";" + report.published().getYear() + "\n");
+            for (ResearchReport citation : report.citations()) {
+                sb.append(citation.reportId() + ";" + citation.name() + ";" + citation.published().getYear() + "\n");
+            }
+            sb.append("----------------------------------------------\n");
+        }
+        return sb.toString();
     }
 }

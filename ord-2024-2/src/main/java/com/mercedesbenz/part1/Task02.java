@@ -1,4 +1,4 @@
-package main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 import no.ntnu.tdt4100.part1.ITask02;
 

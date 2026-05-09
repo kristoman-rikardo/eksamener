@@ -1,11 +1,25 @@
 package com.mercedesbenz.part2;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+
+import no.ntnu.tdt4100.part2.Project;
+
 /**
  * Mercedes has various research facilities around the world.
  * 
  * This class represents a research facility
  */
 // TODO Implement the ResearchFacility class and its methods according to JavaDoc
+
+public class ResearchFacility {
+    private String name;
+    private List<Project> projects;
+    private double yearlyBudgetInMillions;
+
 
     /**
      * Constructs the research facility object
@@ -31,11 +45,21 @@ package com.mercedesbenz.part2;
      */
     // TODO Implement the constructor
 
+    public ResearchFacility(String name, List<Project> projects, double yearlyBudgetInMillions) {
+        if (name == null || projects == null || yearlyBudgetInMillions < 0 || name.length() < 3 
+            || name.length() > 30 || projects.stream().mapToDouble(p -> p.budgetInMillions()).sum() > yearlyBudgetInMillions) throw new IllegalArgumentException();
+        this.name = name;
+        this.projects = projects;
+        this.yearlyBudgetInMillions = yearlyBudgetInMillions;
+    }
+
     /**
      * Returns the name of the research facility
      * @return the name of the research facility, type of {@link String}
      */
     // TODO Implement the getName() method
+
+    public String getName() {return this.name;}
 
     /**
      * Returns the yearly budget in millions
@@ -43,12 +67,16 @@ package com.mercedesbenz.part2;
      */
     // TODO Implement the getYearlyBudgetInMillions() method, type of double
 
+    public double getYearlyBudgetInMillions() {return this.yearlyBudgetInMillions;}
+
     /**
      * Returns the list of projects currently in development at this research facility
      * 
      * @return the list of projects currently in development at this research facility
      */
     // TODO Implement the getProjects() method according to JavaDoc
+
+    public List<Project> getProjects() {return this.projects;}
 
     /**
      * Returns the number of days from today until estimated end time for 
@@ -64,3 +92,18 @@ package com.mercedesbenz.part2;
      * @see Project#estimatedEndDate()
      */
     // TODO Implement the getNumberOfDaysUntilEndTime method according to JavaDoc
+
+    public Optional<Project> findProject(String projectName) {
+        return getProjects().stream().filter(p -> p.name().equals(projectName)).findAny();
+    }
+
+    public OptionalInt getNumberOfDaysUntilEndTime(String projectName) {
+        Optional<Project> project = findProject(projectName);
+        if (project.isEmpty()) return OptionalInt.empty();
+        LocalDate start = project.get().startDate();
+        LocalDate end = project.get().estimatedEndDate();
+        return OptionalInt.of((int)ChronoUnit.DAYS.between(start, end));
+    }
+
+
+}

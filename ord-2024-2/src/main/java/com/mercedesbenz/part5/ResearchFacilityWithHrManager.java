@@ -1,7 +1,9 @@
 package com.mercedesbenz.part5;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import no.ntnu.tdt4100.part2.IResearchFacility;
@@ -20,7 +22,8 @@ import no.ntnu.tdt4100.part5.IHumanResourceManager;
  * @see ResearchFacilityWithHrManagerTests
  */
 public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHumanResourceManager {
-
+    private IResearchFacility delegate;
+    private IHumanResourceManager humanResourceManager;
     /**
      * Constructor - creates a ResearchFacilityWithHrManager object
      * 
@@ -29,7 +32,9 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      */
 
     public ResearchFacilityWithHrManager(IResearchFacility delegate, IHumanResourceManager humanResourceManager) {
-        // TODO Implement the constructor according to JavaDoc specification
+        if (delegate == null || humanResourceManager == null) throw new IllegalArgumentException();
+        this.delegate = delegate;
+        this.humanResourceManager = humanResourceManager;
     }
 
     /**
@@ -41,8 +46,7 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      */
     @Override
     public String getName() {
-        // TODO Implement method according to JavaDoc
-        return null;
+        return delegate.getName();
     }
 
 
@@ -55,8 +59,7 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      */
     @Override
     public double getYearlyBudgetInMillions() {
-        // TODO Implement method according to JavaDoc
-        return -1.0;
+        return delegate.getYearlyBudgetInMillions();
     }
 
 
@@ -69,8 +72,7 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      */
     @Override
     public List<Project> getProjects() {
-        // TODO Implement method according to JavaDoc
-        return null;
+        return delegate.getProjects();
     }
 
 
@@ -81,8 +83,7 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      */
     @Override
     public IHumanResourceManager getHumanResourceManager() {
-        // TODO Implement method according to JavaDoc
-        return null;
+        return humanResourceManager;
     }
 
 
@@ -111,7 +112,19 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      * @see IHumanResourceManager#hire(Person, int)
      */
     public void startProject(Project project, Map<Person, Integer> peopleAndSalaries) throws CanNotStartProjectException {
-       // TODO Implement method according to JavaDoc
+        if (project == null || peopleAndSalaries == null) throw new CanNotStartProjectException();
+        boolean exceedsIndCap = peopleAndSalaries.entrySet().stream()
+            .filter(entry -> entry.getValue() <= getHumanResourceManager().getYearlySalaryCapForSingleEmployee())
+            .toList().size() != peopleAndSalaries.size();
+        boolean isHired = peopleAndSalaries.entrySet().stream()
+            .filter(entry -> !getHumanResourceManager().isHired(entry.getKey()))
+            .toList().size() != peopleAndSalaries.size();
+        boolean exceedsTotCap = peopleAndSalaries.values().stream()
+            .mapToInt(Integer::intValue).sum()
+             + humanResourceManager.getTotalYearlySalaryForAllEmployees() > humanResourceManager.getYearlySalaryCapForAllEmployees();
+        if (exceedsIndCap || isHired || exceedsTotCap) throw new CanNotStartProjectException(); // total salaries exceeds cap
+        getProjects().add(project);
+        peopleAndSalaries.entrySet().stream().forEach(entry -> humanResourceManager.hire(entry.getKey(), entry.getValue())); // hiring all enrolled for the project
     }
 
     /**
@@ -128,6 +141,11 @@ public class ResearchFacilityWithHrManager implements IResearchFacility, IHasHum
      * @see IHumanResourceManager#fire(Person)
      */
     public void endProject(UUID projectId, List<Person> people){
-        // TODO Implement this method according to JavaDoc
+        if (getProjects().stream().filter(p -> p.projectId().equals(projectId)).toList().isEmpty()) return; // no project with this id in the registra
+        for (Person person : people) {
+            if (humanResourceManager.isHired(person)) humanResourceManager.fire(person);
+        }
+        Optional<Project> project = getProjects().stream().filter(p -> p.projectId().equals(projectId)).findAny();
+        getProjects().remove(project.get());
     }
 }

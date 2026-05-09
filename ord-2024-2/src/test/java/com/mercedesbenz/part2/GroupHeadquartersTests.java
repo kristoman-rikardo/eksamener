@@ -68,7 +68,7 @@ class GroupHeadquartersTests {
         GroupHeadquarters g = new GroupHeadquarters();
 
         // Uncomment this test, remove the assertFalse, and run the test after implementing the interface
-        assertFalse(true);
-        // assertEquals(2, g.getTotalBudgetForAllFacilities(List.of(facility1,facility2)));
+        // assertFalse(true);
+        assertEquals(2, g.getTotalBudgetForAllFacilities(List.of(facility1,facility2)));
     }
 }

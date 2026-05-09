@@ -1,4 +1,4 @@
-package com.main.java.com.mercedesbenz.part1;
+package com.mercedesbenz.part1;
 
 import no.ntnu.tdt4100.part1.AbstractTask10;
 
@@ -17,7 +17,7 @@ public class Task10 extends AbstractTask10 {
         // B__nope();
         // C__saywhat();
         // D__its_either_A_B_or_C_but_we_must_run_the_program_to_determine_which();
-        // E__none_because_given_specific_input_values_the_method_might_throw_an_error();
+        E__none_because_given_specific_input_values_the_method_might_throw_an_error();
     }
 
     public String print(String greet, String name) {
@@ -30,6 +30,10 @@ public class Task10 extends AbstractTask10 {
             message += "saywhat";
         return message;
     }
+
+    // public static void main(String[] args) {
+    //     System.out.println(print("heihei", "kris"));
+    // }
 }
 
 

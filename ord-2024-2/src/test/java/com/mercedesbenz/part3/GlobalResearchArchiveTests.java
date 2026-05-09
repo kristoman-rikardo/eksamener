@@ -21,14 +21,14 @@ public class GlobalResearchArchiveTests {
     void getNumberOfSubmittedResearchReports_should_return_the_correct_number() {
         // After implementing the getNumberOfSubmittedResearchReports
         // uncomment test and remove the assertFalse to run the test
-        assertFalse(true);
+        // assertFalse(true);
 
-        // long submittedReports = GlobalResearchArchive.getNumberOfSubmittedResearchReports();
-        // assertEquals(0, submittedReports);
-        // for(int i = 0; i < 10; i++) {
-        // GlobalResearchArchive.submitResearchReport(report(i));
-        // }
-        // assertEquals(10, GlobalResearchArchive.getNumberOfSubmittedResearchReports());
+        long submittedReports = GlobalResearchArchive.getNumberOfSubmittedResearchReports();
+        assertEquals(0, submittedReports);
+        for(int i = 0; i < 10; i++) {
+        GlobalResearchArchive.submitResearchReport(report(i));
+        }
+        assertEquals(10, GlobalResearchArchive.getNumberOfSubmittedResearchReports());
     }
 
     private ResearchReport report(int i) {
