@@ -27,4 +27,9 @@ public class Athlete {
 		return name;
 	}
 
+	@Override
+	public String toString() {
+		return getName() + " - " + getCountry() + " - " + getMedals().size();
+	}
+
 }

@@ -58,7 +58,7 @@ public class SeatAssignment {
             startRow = 1;
         } else {
             String precedingSeatClass = seatClassOrder.get(seatClassOrder.indexOf(seatClass) - 1);
-            startRow += getSeatClassStartRow(precedingSeatClass);
+            startRow += getSeatClassStartRow(precedingSeatClass) + 2;
         }
         return startRow;
     }
@@ -86,7 +86,7 @@ public class SeatAssignment {
             int startRow = getSeatClassStartRow(seatClass);
             int endRow = startRow + numSeatClassRows.get(seatClass);
 
-            for (int row = startRow; row <= endRow; row++) {
+            for (int row = startRow; row < endRow; row++) {
                 for (int col = 1; col <= numColumns; col++) {
                     String seat = row + String.valueOf((char) ('A' + col - 1));
                     if (!isSeatOccupied(seat)) {

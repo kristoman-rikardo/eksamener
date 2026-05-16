@@ -1,6 +1,10 @@
 package part2;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * DecreasingStacks is a class that manages an ordered list of {@link DecreasingStack} instances
@@ -8,14 +12,14 @@ import java.util.List;
  */
 public class DecreasingStacks {
 
-	// TOOO: fields
-
+	private List<DecreasingStack> stacks = new ArrayList<>();
+	
 	/**
 	 * @return true if all stacks (if any) are empty
 	 */
 	public boolean isEmpty() {
-		// TODO
-		return false;
+		if (this.stacks.isEmpty()) return true; // ambigous if empty should return true or false
+		return this.stacks.stream().filter(s -> s.isEmpty()).count() == this.stacks.size(); // if all elements are empyt, the filtered list is as long as before
 	}
 
 	/**
@@ -26,7 +30,10 @@ public class DecreasingStacks {
 	 * @param element the element to push
 	 */
 	public void push(final int element) {
-		// TODO
+		for (DecreasingStack stack : this.stacks) {
+			if (stack.push(element)) return; // we're done if we push the element
+		}
+		this.stacks.add(new DecreasingStack(element));
 	}
 
 	/**
@@ -34,8 +41,9 @@ public class DecreasingStacks {
 	 */
 	@Override
 	public String toString() {
-		// TODO
-		return null;
+		StringBuilder sb = new StringBuilder();
+		this.stacks.stream().forEach(s -> sb.append(s.toString() + "\n"));
+		return sb.toString();
 	}
 
 	/**
@@ -45,8 +53,12 @@ public class DecreasingStacks {
 	 * @throws an appropriate subclass of RuntimeException if no element can be popped
 	 */
 	public int pop() {
-		// TODO
-		return 0;
+		if (isEmpty()) throw new EmptyStackException();
+		return this.stacks.stream() // make a stream of the 2d list
+		.filter(s -> !s.isEmpty()) // just because the stacks is not empty does not mean every stack is not
+		.min(Comparator.comparingInt(DecreasingStack::peek)) // finding smallest element, only need to check the upper ones
+		.orElseThrow(EmptyStackException::new) // throw exception if anything is wrong
+		.pop(); // pop the actual found element
 	}
 
 	/**
@@ -55,8 +67,12 @@ public class DecreasingStacks {
 	 * The elements are also removed from this DecreasingStacks.
 	 */
 	public List<Integer> popAll() {
-		// TODO
-		return null;
+		List<Integer> list = this.stacks.stream()
+		.flatMap(DecreasingStack::stream)
+		.sorted()
+		.collect(Collectors.toList()); // made a homemade stream for the stack for it to work
+		this.stacks.removeAll(this.stacks);
+		return list;
 	}
 
 	// for your own use
@@ -74,6 +90,7 @@ public class DecreasingStacks {
 		System.out.println(stacks.popAll());
 		// Should print
 		// [1, 2, 3, 4, 4, 5, 6, 7, 8]
+		System.out.println(stacks.popAll());
 	}
 }
 

@@ -1,8 +1,11 @@
 package part5;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
+// import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import shared.Aircraft;
 import shared.IAircraft;
@@ -13,6 +16,7 @@ public class AircraftMaintenance {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String maintenanceStatus;
+    private Map<IMaintenanceObserver, List<String>> observers = new HashMap<>();
     // TODO - add additional fields here
 
     /**
@@ -73,7 +77,10 @@ public class AircraftMaintenance {
      * @param endTime   The end time of the maintenance.
      */
     public void scheduleMaintenance(LocalDateTime startTime, LocalDateTime endTime) {
-        // TODO - write your code here.
+        if (endTime.isBefore(startTime)) throw new IllegalArgumentException("Cannot end scheduled maintenance before it starts");
+        this.startTime = startTime;
+        this.endTime = endTime;
+        updateMaintenanceStatus(MaintenanceStatus.SCHEDULED);
     }
 
     /**
@@ -85,8 +92,8 @@ public class AircraftMaintenance {
      * @param fromStatus The initial status for the observer to listen for.
      * @param toStatus   The target status for the observer to listen for.
      */
-    public void addObserver(IMaintenanceObserver observer, String fromStatus, String toStatus) {
-        // TODO - write your code here.
+    public void addObserver(IMaintenanceObserver observer, String fromStatus, String toStatus) { // key assumption: the statuses is a range (looks like it) and observer might listen between several hops of the statuses
+        this.observers.putIfAbsent(observer, new ArrayList<>(List.of(fromStatus, toStatus))); // if observer already there we assume nothing should happen
     }
 
     /**
@@ -97,7 +104,8 @@ public class AircraftMaintenance {
      * @param toStatus   The target status the observer was listening for.
      */
     public void removeObserver(IMaintenanceObserver observer, String fromStatus, String toStatus) {
-        // TODO - write your code here.
+        if (!this.observers.containsKey(observer)) return;
+        this.observers.remove(observer);
     }
 
     /**
@@ -109,7 +117,15 @@ public class AircraftMaintenance {
      *                                  in the MaintenanceStatus class
      */
     public void updateMaintenanceStatus(String maintenanceStatus) {
-        // TODO - write your code here.
+        List<String> statuses = MaintenanceStatus.getMaintenanceStatuses();
+        if (!statuses.contains(maintenanceStatus)) throw new IllegalArgumentException("Illegal status");
+        this.maintenanceStatus = maintenanceStatus;
+        for (Map.Entry<IMaintenanceObserver, List<String>> entry : observers.entrySet()) {
+            boolean isWithin = statuses.indexOf(maintenanceStatus) >= statuses.indexOf(entry.getValue().get(0))
+                && statuses.indexOf(maintenanceStatus) <= statuses.indexOf(entry.getValue().get(1)); // is the observer listening for statuses surrounding this status 
+            if (isWithin) entry.getKey().maintenanceStatusChanged(aircraft, maintenanceStatus); // only notifying observers listening for this status
+        }
+
     }
 
     public static void main(String[] args) {

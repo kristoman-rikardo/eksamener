@@ -1,7 +1,9 @@
 package com.shopstore.retail.part4;
 
+// import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 import no.ntnu.tdt4100.IProduct;
 import no.ntnu.tdt4100.Shipment;
@@ -32,6 +34,14 @@ public class ShippingStatusWriter {
      *  productName2;number in shipment
      * </pre>
      * 
+     * 1;2021-09-01T12:00:00
+
+    Products ordered;2021-09-01T12:00:12
+    Products packed;2021-09-02T09:00:00
+
+    Green T-Shirt;3 <product name;number of products in shipment>
+    Basic Jeans;2
+     * 
      * The file resources/output_example.txt contains an example of how the output
      * should look.
      * 
@@ -47,8 +57,21 @@ public class ShippingStatusWriter {
      * @see IProduct
      * @see OutputStream
      */
-    public static void write(Shipment shipment, OutputStream outputStream) {
-        // TODO: Implement the method according to the description in the JavaDoc
+    public static void write(Shipment shipment, OutputStream outputStream) throws IOException {
+       outputStream.write(buildString(shipment).getBytes());
+       outputStream.flush();
+    }
+
+    public static String buildString(Shipment shipment) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(shipment.id() + ";" + shipment.createdDateTime() +"\n\n");
+        for (ShipmentUpdate update : shipment.updates()) {
+            sb.append(update.updateMessage() + ";" + update.updateDateTime() + "\n");
+        }
+        for (Map.Entry<IProduct, Integer> entry : shipment.productsContained().entrySet()) {
+            sb.append("\n" + entry.getKey().getName() + ";" + entry.getValue());
+        }
+        return sb.toString();
     }
 
 }

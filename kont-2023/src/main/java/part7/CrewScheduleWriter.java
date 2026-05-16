@@ -3,8 +3,10 @@ package part7;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 import part3.CrewMember;
 import part3.CrewSchedule;
@@ -26,9 +28,20 @@ public class CrewScheduleWriter {
      * @param flight       The flight for which to write the crew schedule.
      * @param outputStream The OutputStream to which to write the crew schedule.
      */
-    public void writeCrewScheduleForFlight(ICrewSchedule crewSchedule, IFlight flight, OutputStream outputStream)
-            throws IOException {
-        // TODO - write your code here
+    public void writeCrewScheduleForFlight(ICrewSchedule crewSchedule, IFlight flight, OutputStream outputStream) throws IOException {
+        OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+        writer.write(buildString(crewSchedule, flight));
+        writer.flush();
+    }
+
+    public String buildString(ICrewSchedule crewSchedule, IFlight flight) {
+        StringBuilder sb = new StringBuilder();
+        List<CrewMember> crew = crewSchedule.getAssignedCrewForFlight(flight);
+        sb.append(flight.getFlightNumber() + "\n");
+        for (CrewMember member : crew) {
+            sb.append(member.getName() + " - " + member.getPosition() + "\n");
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {

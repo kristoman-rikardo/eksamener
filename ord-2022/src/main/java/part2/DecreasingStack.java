@@ -1,17 +1,22 @@
 package part2;
 
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.List;
+import java.util.stream.Stream;
+
 /**
  * A stack of integers that is decreasing in size.
  */
 public class DecreasingStack {
-
+	private List<Integer> stack = new ArrayList<>();
 	// TODO: fields
 
 	/**
 	 * Initializes this DecreasingStack with the provided element.
 	 */
 	public DecreasingStack(final int firstValue) {
-		// TODO
+		this.stack.add(firstValue);
 	}
 
 	/**
@@ -22,7 +27,10 @@ public class DecreasingStack {
 	 * @return true if element is successfully pushed, false otherwise
 	 */
 	public boolean push(final int element) {
-		// TODO
+		if (element < peek()) {
+			this.stack.add(element);
+			return true;
+		}
 		return false;
 	}
 
@@ -33,8 +41,13 @@ public class DecreasingStack {
 	 * @throws an appropriate subclass of RuntimeException if is stack is empty.
 	 */
 	public int pop() {
-		// TODO
-		return 0;
+		if (isEmpty()) throw new EmptyStackException();
+		return this.stack.remove(this.stack.size() - 1);
+
+	}
+
+	public Stream<Integer> stream() {
+		return this.stack.stream();
 	}
 
 	/**
@@ -44,22 +57,20 @@ public class DecreasingStack {
 	 * @throws an appropriate subclass of RuntimeException if is stack is empty.
 	 */
 	public int peek() {
-		// TODO
-		return 0;
+		if (isEmpty()) throw new EmptyStackException();
+		return this.stack.get(this.stack.size() - 1);
 	}
-
+	
 	@Override
 	public String toString() {
-		// TODO
-		return null;
+		return this.stack.toString();
 	}
 
 	/**
 	 * @return true if stack is empty, false otherwise
 	 */
 	public boolean isEmpty() {
-		// TODO
-		return false;
+		return (this.stack == null || this.stack.size() < 1);
 	}
 
 	// for your own use

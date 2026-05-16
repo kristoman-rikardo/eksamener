@@ -1,7 +1,12 @@
 package part6;
 
-public class BatchNotificationService implements INotificationService {
+import java.util.HashMap;
+import java.util.Map;
 
+public class BatchNotificationService implements INotificationService {
+    private int batchSize;
+    private Map<String, String> batch = new HashMap<>();
+    private INotificationService delegate;
     // TODO - add your fields here
 
     /**
@@ -13,7 +18,9 @@ public class BatchNotificationService implements INotificationService {
      *                  sending notifications.
      */
     public BatchNotificationService(int batchSize, INotificationService delegate) {
-        // TODO - write your code here
+        if (batchSize < 1 || delegate == null) throw new IllegalArgumentException("Batch size cannot be 0 or below and delegate cannot be null");
+        this.batchSize = batchSize;
+        this.delegate = delegate;
     }
 
     /**
@@ -25,8 +32,15 @@ public class BatchNotificationService implements INotificationService {
      */
     @Override
     public void sendNotification(String email, String message) {
-        // TODO - write your code here
-
+        if (this.batch.size() + 1 >= batchSize) { // this notif makes it full
+            for (Map.Entry<String, String> entry : this.batch.entrySet()) {
+                delegate.sendNotification(entry.getKey(), entry.getValue()); // for every entry of the batch, send notif through delegate
+            }
+            delegate.sendNotification(email, message); // notif the last one
+            this.batch.clear(); // empty batch
+            return;
+        }
+        this.batch.put(email, message); // build the batch further if we did not reach the limit
     }
 
     public static void main(String[] args) {

@@ -31,13 +31,13 @@ public class Task5 {
                 ch = (char) (ch + 1);
 
                 // ch = (char) (ch % 28);
-                 ch = (char) (ch - 97);
+                ch = (char) (ch - 97);
                 // ch = (char) (ch + 20 % 97);
-                 ch = (char) (ch % 26);
+                ch = (char) (ch % 26);
                 // ch = (char) (ch % 96);
                 // ch = (char) (ch + 1 % 96);
                 // ch = (char) ((ch % 97) + 27);
-                 ch = (char) (ch + 97);
+                ch = (char) (ch + 97);
             }
             output += "\n";
             // output += "\t";
@@ -50,11 +50,7 @@ public class Task5 {
         // You can use this main method to test the method if you like, but it is not
         // required
         Task5 x = new Task5();
-        char a = 'a';
         System.out.println(x.stringOutput(8));
-        System.out.println(a +1);
-
-        // a = 97, z = 123 -> 123 + 1 % 97 = 
 
         // Example Output that we are looking for:
         // a

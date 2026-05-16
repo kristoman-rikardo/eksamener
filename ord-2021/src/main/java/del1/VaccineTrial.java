@@ -1,7 +1,11 @@
 package del1;
 
-public class VaccineTrial {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+public class VaccineTrial {
+	private List<VaccineTrialVolunteer> volunteers = new ArrayList<>();
 	// Add any needed fields here
 
 	/**
@@ -12,8 +16,10 @@ public class VaccineTrial {
 	 * @param placebo Whether the volunteer was given a placebo, or the actual
 	 *                vaccine
 	 */
-	public void addVolunteer(String id, boolean placebo) {
-		// TODO
+	public void addVolunteer(String id, boolean placebo) { 
+		VaccineTrialVolunteer volunteer = new VaccineTrialVolunteer(id, placebo); // the constructur of the volunteer does the error check
+		if (this.volunteers.stream().anyMatch(v -> v.getId().equals(id))) throw new IllegalStateException("Volunteer already added");
+		this.volunteers.add(volunteer);
 	}
 
 	/**
@@ -32,9 +38,11 @@ public class VaccineTrial {
 	 * @return Whether the vaccine effectiveness rate is higher than the limit
 	 */
 	public boolean isMoreEffectiveThanLimit(double limit) {
-		// TODO
-		return false;
-
+		if (limit < 0 || limit > 1) throw new IllegalArgumentException();
+		double gotSickAll = (double) this.volunteers.stream().filter(v -> v.gotSick()).count();
+		double gotSickVaccine = (double) this.volunteers.stream().filter(v -> !v.isPlacebo()).filter(v -> v.gotSick()).count();
+		double effectivnes = 1 - (gotSickVaccine / gotSickAll);
+		return effectivnes > limit;
 	}
 
 	/**
@@ -43,8 +51,9 @@ public class VaccineTrial {
 	 * @param id The id of the volunteer to set sick.
 	 * @throws IllegalArgumentException if there is no volunteer with the given id
 	 */
-	public void setSick(String id) {
-		// TODO
+	public void setSick(String id) { // assume setSick only means to set the patient to become sick, not the other way around
+		if (getVolunteer(id) == null) throw new IllegalArgumentException();
+		getVolunteer(id).setGotSick(true);
 	}
 
 	/**
@@ -56,8 +65,9 @@ public class VaccineTrial {
 	 *         for any volunteer, return null
 	 */
 	public VaccineTrialVolunteer getVolunteer(String id) {
-		// TODO
-		return null;
+		Optional<VaccineTrialVolunteer> volunteer = this.volunteers.stream().filter(v -> v.getId().equals(id)).findAny();
+		if (volunteer.isEmpty()) return null;
+		return volunteer.get();
 	}
 
 	public static void main(String[] args) {

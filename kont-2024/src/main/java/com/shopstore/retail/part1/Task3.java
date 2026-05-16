@@ -28,7 +28,7 @@ public class Task3 {
     public static void main(String[] args) {
         // You can use this main method to test the method if you like, but it is not required
         Task3 x = new Task3();
-        System.out.println(x.stringInserter("null", "tull", 1));
+        System.out.println(x.stringInserter("helloheello", "aaa", 3));
     }
 
 }

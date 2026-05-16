@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class UniversityHandbookUtils {
 
@@ -17,8 +18,9 @@ public class UniversityHandbookUtils {
 	 * @return A collection of courses that satisfy the predicate.
 	 */
 	public static Collection<Course> getCoursesWithPredicate(Collection<Course> courses, Predicate<Course> p) {
-		// TODO
-		return new ArrayList<>();
+		return courses.stream()
+			.filter(c -> p.test(c))
+			.collect(Collectors.toList());
 	}
 
 	/**
@@ -28,8 +30,9 @@ public class UniversityHandbookUtils {
 	 * @return A collection of course without any prerequisites
 	 */
 	public static Collection<Course> getNonPrequisiteCourses(Collection<Course> courses) {
-		// TODO
-		return new ArrayList<>();
+		return courses.stream()
+			.filter(c -> c.getPrerequisites().isEmpty())
+			.collect(Collectors.toList());
 
 	}
 	
@@ -48,8 +51,12 @@ public class UniversityHandbookUtils {
 	 * @return whether the courses contains an impossible course
 	 */
 	public static boolean containsImpossibleCourse(Collection<Course> courses) {
-		// TODO
-		return false;
+		return courses.stream()
+			.anyMatch(c -> 
+				c.getPrerequisites()
+				.stream()
+				.anyMatch(pc -> 
+					pc.getPrerequisites().contains(c)));
 	}
 	
 	public static void main(String[] args) {

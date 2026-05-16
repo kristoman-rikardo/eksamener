@@ -1,34 +1,36 @@
 package del1;
 
 public class VaccineTrialVolunteer {
+	private String id;
+	private boolean placebo;
+	private boolean gotSick = false;
 
 	public VaccineTrialVolunteer(String id, boolean placebo) {
-		// TODO
+		if (id == null) throw new IllegalArgumentException();
+		this.id = id;
+		this.placebo = placebo;
 	}
 
 	public String getId() {
-		// TODO
-		return null;
+		return this.id;
 	}
 
 	/* Whether the volunteer was given a placebo or the actual vaccine */
 	public boolean isPlacebo() {
-		// TODO
-		return false;
+		return (this.placebo);
 	}
 
 	/* Whether the volunteer got sick during the trial period, 
 	 * the default value for this should be false */
 	public boolean gotSick() {
-		// TODO
-		return false;
+		return (this.gotSick);
 	}
 
 	/*
 	 * Updates whether the participant got sick during the trial period
 	 */
 	public void setGotSick(boolean gotSick) {
-		// TODO
+		this.gotSick = gotSick;
 	}
 
 }

@@ -1,7 +1,11 @@
 package part2;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import shared.Flight;
 import shared.IBaggageCarousel;
@@ -10,7 +14,7 @@ import shared.IFlight;
 public class BaggageClaim {
 
     // TODO - add your fields here
-
+    private List<IBaggageCarousel> carousels = new ArrayList<>();
     /**
      * Constructor that takes in the number of baggage carousels that will be
      * handled by the baggage claim. The constructor should also initialise these
@@ -20,7 +24,10 @@ public class BaggageClaim {
      * @throws IllegalArgumentException if numberOfCarousels is less than 1.
      */
     public BaggageClaim(int numberOfCarousels) {
-        // TODO - write your code here.
+        if (numberOfCarousels < 1) throw new IllegalArgumentException("Cannot initiate with a number lower than 1");
+        for (int i = 0; i < numberOfCarousels; i++) {
+            this.carousels.add(new BaggageCarousel(i + 1));
+        }
     }
 
     /**
@@ -29,21 +36,21 @@ public class BaggageClaim {
      * @return The list of carousels in the baggage claim.
      */
     public List<IBaggageCarousel> getCarousels() {
-        // TODO - write your code here.
-        return null;
+        return this.carousels;
     }
 
     /**
      * Assign a flight to an available carousel, or the least busy carousel if all
-     * baggage claims are currently in use. If no carousels are available and
-     * there are multiple carousels that are the least busy, only one of these
-     * (can be arbitrary/tilfeldig) should be chosen.
+     * baggage claims are currently in use. If no carousels are available and 
+     * there are multiple carousels that are the least busy, only one of these 
+     * (can be arbitrary/tilfeldig) should be chosen.  // i assume this means adding it in the back of the queue as IBaggageCarousel does not implement a force method
      *
      * @param flight The flight to be assigned to a carousel.
      * @throws IllegalArgumentException if flight is null.
      */
     public void assignFlightToCarousel(IFlight flight) {
-        // TODO - write your code here.
+        if (flight == null) throw new IllegalArgumentException("Flight cannot be null");
+        this.carousels.stream().sorted(Comparator.comparingInt(c -> c.getFlightQueue().size())).collect(Collectors.toList()).get(0).addFlightToQueue(flight);
     }
 
     /**
@@ -52,8 +59,9 @@ public class BaggageClaim {
      * @return An available carousel, or null if no carousel is available.
      */
     public IBaggageCarousel findAvailableCarousel() {
-        // TODO - write your code here.
-        return null;
+        Optional<IBaggageCarousel> bc = this.carousels.stream().filter(c -> c.isAvailable()).findAny();
+        if (bc.isEmpty()) return null;
+        return bc.get();
     }
 
     /**
@@ -66,8 +74,9 @@ public class BaggageClaim {
      * @return The least busy carousel, according to the rules above.
      */
     public IBaggageCarousel findLeastBusyCarousel() {
-        // TODO - write your code here.
-        return null;
+        Optional<IBaggageCarousel> bc = this.carousels.stream().sorted(Comparator.comparingInt(c -> c.getFlightQueue().size())).findFirst();
+        if (bc.isEmpty()) return null;
+        return bc.get();
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package part2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import part1.Leg;
@@ -10,7 +11,7 @@ import part1.Route;
  * Tracks the partipants's movements through their respective routes
  */
 public class ParticipantsTracker {
-
+	private List<Participant> participants = new ArrayList<>();
 	// TODO: necessary fields and initialisation
 
 	/**
@@ -20,7 +21,9 @@ public class ParticipantsTracker {
 	 * @param route
 	 */
 	public void register(final Participant participant, final Route route) {
-		// TODO
+		if (participant == null || route == null || this.participants.contains(participant)) throw new IllegalArgumentException();
+		this.participants.add(participant);
+		participant.setRoute(route);
 	}
 
 	/**
@@ -31,8 +34,8 @@ public class ParticipantsTracker {
 	 */
 
 	public boolean isRegistered(final Participant participant) {
-		// TODO
-		return false;
+		if (participant == null) return false; // participant null is not registered
+		return (this.participants.contains(participant));
 	}
 
 	/**
@@ -44,7 +47,9 @@ public class ParticipantsTracker {
 	 * @throws IllegalArgumentException if the post isn't the starting post of the participant's route
 	 */
 	public void start(final Participant participant, final Post post) {
-		// TODO
+		if (!isRegistered(participant)) throw new IllegalStateException();
+		if (participant.getRoute().getPost(0) != post) throw new IllegalArgumentException();
+		participant.setProgression(1);
 	}
 
 	/**
@@ -54,8 +59,8 @@ public class ParticipantsTracker {
 	 * @return if the provided participant has started the race
 	 */
 	public boolean hasStarted(final Participant participant) {
-		// TODO
-		return false;
+		if (participant == null) return false;
+		return (participant.getCurrentPost() != null);
 	}
 
 	/**
@@ -65,8 +70,8 @@ public class ParticipantsTracker {
 	 * @return if the provided participant has finished the race
 	 */
 	public boolean hasFinished(final Participant participant) {
-		// TODO
-		return false;
+		if (participant == null) return false;
+		return participant.isFinished();
 	}
 
 	/**
@@ -77,8 +82,8 @@ public class ParticipantsTracker {
 	 * @throws IllegalStateException if participant hasn't started or has finished
 	 */
 	public Leg getCurrentLeg(final Participant participant) {
-		// TODO
-		return null;
+		if (participant == null || hasFinished(participant) || !hasStarted(participant)) throw new IllegalStateException();
+		return participant.getRoute().getLeg(participant.getCurrentProgression());
 	}
 
 	/**
@@ -89,8 +94,8 @@ public class ParticipantsTracker {
 	 * @throws IllegalStateException if participant hasn't started or has finished
 	 */
 	public Post getExpectedNextPost(final Participant participant) {
-		// TODO
-		return null;
+		if (participant == null || hasFinished(participant) || !hasStarted(participant)) throw new IllegalStateException();
+		return getCurrentLeg(participant).getEndPost();
 	}
 
 	/**
@@ -102,7 +107,9 @@ public class ParticipantsTracker {
 	 * @throws IllegalArgumentException if the post is not the appropriate post on the participant's route
 	 */
 	public void registerPost(final Participant participant, final Post post) {
-		// TODO
+		if (participant == null || hasFinished(participant) || !hasStarted(participant)) throw new IllegalStateException();
+		// if (!post.equals(getExpectedNextPost(participant))) throw new IllegalArgumentException();
+		participant.setProgression(1);
 	}
 
 	//

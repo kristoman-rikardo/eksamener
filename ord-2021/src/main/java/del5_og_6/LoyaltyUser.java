@@ -1,13 +1,17 @@
 package del5_og_6;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class LoyaltyUser {
 	private String username;
 	private int points;
 	private String status;
 	public static List<String> validStatuses = Arrays.asList("Basic", "Gold", "Silver", "Platinum");
+	private Map<StatusListener, String> listeners = new HashMap<>();
 	// TODO - Add any extra needed fields here
 
 	public LoyaltyUser(String username) {
@@ -43,17 +47,21 @@ public class LoyaltyUser {
 	 * status should be notified
 	 */
 	public void checkForStatusUpgrade() {
-		if (this.points <= 1000) {
-			this.status = "Basic";
+		if (this.points > 10000) {
+			fireStatusChanged(getStatus(), "Platinum");
+			this.status = "Platinum";
 		}
-		if (this.points > 1000) {
-			this.status = "Silver";
-		}
-		if (this.points > 5000) {
+		else if (this.points > 5000) {
+			fireStatusChanged(getStatus(), "Gold");
 			this.status = "Gold";
 		}
-		if (this.points > 10000) {
-			this.status = "Platinum";
+		else if (this.points > 1000) {
+			fireStatusChanged(getStatus(), "Silver");
+			this.status = "Silver";
+		}
+		else {
+			fireStatusChanged(getStatus(), "Basic");
+			this.status = "Basic";
 		}
 	}
 
@@ -69,8 +77,8 @@ public class LoyaltyUser {
 	 * @throws IllegalArgumentException If the status is not valid
 	 */
 	public void addListener(StatusListener listener, String status) {
-		// TODO
-
+		if (listener == null || !validStatuses.contains(status)) throw new IllegalArgumentException();
+		this.listeners.put(listener, status); // overwrites the listener already entered if so, as specified in the javadoc
 	}
 
 	/**
@@ -79,7 +87,8 @@ public class LoyaltyUser {
 	 * @param listener The listener to remove
 	 */
 	public void removeListener(StatusListener listener) {
-		// TODO
+		if (listener == null || !this.listeners.containsKey(listener)) return;
+		this.listeners.remove(listener);
 	}
 
 	/**
@@ -92,7 +101,11 @@ public class LoyaltyUser {
 	 * @param newStatus The new status of the user
 	 */
 	private void fireStatusChanged(String oldStatus, String newStatus) {
-		// TODO
+		if (oldStatus.equals(newStatus)) return;
+		for (Entry<StatusListener,String> entry : this.listeners.entrySet()) {
+			if (entry.getValue().equals(oldStatus) || entry.getValue().equals(newStatus)) 
+				entry.getKey().statusChanged(getUsername(), oldStatus, newStatus);
+		}
 	}
 	
 	public static void main(String[] args) {

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.073" tests="18" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="25"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/test-classes:/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/classes:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/kristofferswik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/kristofferswik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/kristofferswik/.m2/repository/org/mockito/mockito-core/5.11.0/mockito-core-5.11.0.jar:/home/kristofferswik/.m2/repository/net/bytebuddy/byte-buddy/1.14.12/byte-buddy-1.14.12.jar:/home/kristofferswik/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.12/byte-buddy-agent-1.14.12.jar:/home/kristofferswik/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/kristofferswik/.m2/repository/org/assertj/assertj-core/3.25.3/assertj-core-3.25.3.jar:"/>
+    <property name="java.vm.vendor" value="Red Hat, Inc."/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://www.redhat.com/"/>
+    <property name="user.timezone" value="Europe/Oslo"/>
+    <property name="os.name" value="Linux"/>
+    <property name="java.vm.specification.version" value="25"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="GB"/>
+    <property name="sun.boot.library.path" value="/usr/lib/jvm/java-25-openjdk/lib"/>
+    <property name="sun.java.command" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/surefire/surefirebooter-20260513201051853_3.jar /home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/surefire 2026-05-13T20-10-51_808-jvmRun1 surefire-20260513201051853_1tmp surefire_0-20260513201051853_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/test-classes:/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/classes:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.2/junit-jupiter-engine-5.10.2.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-engine/1.10.2/junit-platform-engine-1.10.2.jar:/home/kristofferswik/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/kristofferswik/.m2/repository/org/junit/platform/junit-platform-commons/1.10.2/junit-platform-commons-1.10.2.jar:/home/kristofferswik/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.2/junit-jupiter-api-5.10.2.jar:/home/kristofferswik/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/kristofferswik/.m2/repository/org/mockito/mockito-core/5.11.0/mockito-core-5.11.0.jar:/home/kristofferswik/.m2/repository/net/bytebuddy/byte-buddy/1.14.12/byte-buddy-1.14.12.jar:/home/kristofferswik/.m2/repository/net/bytebuddy/byte-buddy-agent/1.14.12/byte-buddy-agent-1.14.12.jar:/home/kristofferswik/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/home/kristofferswik/.m2/repository/org/assertj/assertj-core/3.25.3/assertj-core-3.25.3.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/home/kristofferswik"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2026-01-20"/>
+    <property name="java.home" value="/usr/lib/jvm/java-25-openjdk"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="surefire.real.class.path" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024/target/surefire/surefirebooter-20260513201051853_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="25.0.2+10"/>
+    <property name="user.name" value="kristofferswik"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="6.19.6-200.fc43.x86_64"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="(Red_Hat-25.0.2.0.10-3)"/>
+    <property name="localRepository" value="/home/kristofferswik/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-25-openjdk&amp;version=42"/>
+    <property name="java.io.tmpdir" value="/tmp"/>
+    <property name="java.version" value="25.0.2"/>
+    <property name="user.dir" value="/home/kristofferswik/Documents/Objekt/eksamener/kont-2024"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Red Hat, Inc."/>
+    <property name="java.vm.version" value="25.0.2+10"/>
+    <property name="stdin.encoding" value="UTF-8"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="java.class.version" value="69.0"/>
+  </properties>
+  <testcase name="addListener_can_add_more_than_one_listener" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.039"/>
+  <testcase name="increaseStock_increasing_quantity_from_zero_should_notify_listeners" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.002"/>
+  <testcase name="calling_increaseStock_with_invalid_quantity_throws_exception" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.003"/>
+  <testcase name="increaseStock_adding_new_product_sets_stock_and_notifies_listeners" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="addListener_listener_should_not_be_added_twice" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.002"/>
+  <testcase name="ProductInventoryManager_class_implements_InventoryManager_interface" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="getStock_returns_correct_stock" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="reduceStock_new_stock_should_be_2_when_reduced_by_3" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="calling_reduceStock_with_too_high_quantity_throws_IllegalArgumentException" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.002"/>
+  <testcase name="calling_reduceStock_with_too_low_quantity_throws_IllegalArgumentException" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.002"/>
+  <testcase name="calling_reduceStock_with_invalid_product_throws_IllegalArgumentException" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.002"/>
+  <testcase name="reduceStock_reducing_quantity_to_zero_should_notify_listeners" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="reduceStock_reducing_quantity_to_non_zero_should_not_notify_listeners" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.0"/>
+  <testcase name="after_calling_removeListener_no_notifications_should_be_sent_to_the_listener" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="getStock_returns_0_for_product_not_in_inventory" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="increaseStock_new_stock_should_be_8_when_stock_is_increased_by_3" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="increaseStock_increasing_quantity_from_non_zero_should_not_notify_listeners" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+  <testcase name="calling_constructor_with_negative_stock_level_in_productStock_should_throw_IllegalArgumentException" classname="com.shopstore.retail.part5.ProductInventoryManagerTest" time="0.001"/>
+</testsuite>

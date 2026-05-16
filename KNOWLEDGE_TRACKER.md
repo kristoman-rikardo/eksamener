@@ -11,12 +11,12 @@ Formål: holde oversikt over kunnskapsgap på tvers av alle eksamener, slik at h
 |---------|-------------|-------------------|------|---------|
 | ord-2025-2 | Nei | — | — | Nyeste eksamen, høyeste prioritet |
 | ord-2025-1 | Ja | B (~86/100) | 2026-05-06 | ByteBadger-tema. Sterk del 1+2+6. Svak getAllParts (kritisk rekursjonsbug). IOException svelges i write(). |
-| ord-2024-2 | Nei | — | — | Mercedes-tema |
+| ord-2024-2 | Ja | B (~88/100) | 2026-05-09 | Mercedes-tema. Del 1+5 perfekt. wipe()-bug: Arrays.equals() aldri brukt. filterFacilities: sjekker feil nivå (fasilitet vs prosjekt). Mangler implements IResearchFacility. |
 | ord-2024-1 | Ja | B (~83/100) | 2026-05-06 | BMW-tema. Del 1 perfekt. Del 5 sterk (alle 36 tester). WeldChassisStep: mangler public + startTime/endTime. getIsoCountryCode uten uppercase/truncation. filterFactories ikke case-insensitiv. |
-| kont-2024 | Nei | — | — | |
+| kont-2024 | Ja | B+ (~84/100) | 2026-05-13 | Butikk-tema. Del 4+5 nesten feilfri. Kritisk: isDuplicate NPE (første anmeldelse feiler). Alvorlig: getTotal ignorerer rabatter. Moderat: addItem legger til 1 istedenfor quantity. |
 | ord-2023 | Nei | — | — | |
-| kont-2023 | Nei | — | — | |
-| ord-2022 | Nei | — | — | |
+| kont-2023 | Ja | A (~98/100) | 2026-05-13 | Flyplass-tema. Kompilerer rent, alle tester grønne. Eneste reelle feil: getCancelledTickets muterer input-lista istedenfor å lage ny liste. |
+| ord-2022 | Ja | B (~85 % av Del 1-4) | 2026-05-13 | Re-vurdert uten Del 5. Mange bugs fikset: popAll, countLetters, computeDistance-formel, CharCounterImpl2.countChar. Gjenværende: getCharCount(Predicate) teller nøkler ikke verdier; computeDistance krasjer pga remove() på umodifiserbar samling. |
 | kont-2022 | Nei | — | — | |
 | ord-2021 | Nei | — | — | |
 | kont-2021 | Nei | — | — | |
@@ -46,11 +46,11 @@ Formål: holde oversikt over kunnskapsgap på tvers av alle eksamener, slik at h
 - **Gjentakende mønster**: Ingen feil ennå
 - **Status**: Fungerer ✓
 
-### Tilgangsmodifikator på subklasser
+### Tilgangsmodifikator og manglende `implements`-deklarasjon
 - **Alvorlighet**: Høy
-- **Bevis fra**: ord-2024-1 — `WeldChassisStep` deklarert som `class` (package-private) istedenfor `public class`. JavaDoc krevde instansiering utenfor pakken.
-- **Gjentakende mønster**: Første observasjon
-- **Status**: KRITISK GAP — se TASKS_ABSTRAKT_EXECUTE.md for øvingsoppgaver
+- **Bevis fra**: ord-2024-1 — `WeldChassisStep` manglet `public`. ord-2024-2 — `ResearchFacility` implementerer alle grensesnitt-metoder men mangler `implements IResearchFacility`-deklarasjonen.
+- **Gjentakende mønster**: To eksamener på rad! Klasse-deklarasjonsdetaljer er et systematisk svakt punkt.
+- **Status**: KRITISK GJENTAKENDE GAP — etter å ha skrevet en klasse, sjekk alltid: public? implements riktig interface?
 
 ### Abstrakt metodekontract (startTime/endTime)
 - **Alvorlighet**: Høy
@@ -94,17 +94,41 @@ Formål: holde oversikt over kunnskapsgap på tvers av alle eksamener, slik at h
 - **Gjentakende mønster**: Første observasjon
 - **Status**: Forbedringsområde — se TASKS_GETTER_TRANSFORMASJON.md
 
-### Case-insensitiv filtrering med input-validering
-- **Alvorlighet**: Middels
-- **Bevis fra**: ord-2024-1 — `MainOffice.filterFactories()` bruker `== character` (case-sensitiv) og mangler validering av tegn utenfor A-Z/a-z.
-- **Gjentakende mønster**: Første observasjon
-- **Status**: Forbedringsområde — se TASKS_CASE_INSENSITIV_FILTER.md
+### Filter-logikk: feil nivå (fasilitet vs. prosjekt vs. person)
+- **Alvorlighet**: Høy
+- **Bevis fra**: ord-2024-1 — `filterFactories()` case-sensitiv + mangler validering. ord-2024-2 — `filterFacilities()` sjekker fasilitet-budsjett istedenfor prosjekt-budsjetter; mangler null-sjekk for parameter.
+- **Gjentakende mønster**: To eksamener på rad! Filterfeil er et systematisk svakt punkt.
+- **Status**: KRITISK GJENTAKENDE GAP — les alltid JavaDoc-subjektet nøye i filter-metoder
 
-### String-sammenligning (== vs .equals())
-- **Alvorlighet**: — (ikke testet direkte ennå)
-- **Bevis fra**: —
-- **Gjentakende mønster**: —
-- **Status**: Ikke testet ennå
+### Mutere input-lista i filtreringsmetoder
+- **Alvorlighet**: Middels
+- **Bevis fra**: kont-2023 Del 4 — `getCancelledTickets` kaller `tickets.removeAll(cancelled)` på input-lista og returnerer originalen. JavaDoc sier "new list".
+- **Gjentakende mønster**: Første observasjon.
+- **Status**: Huskeregel: `.collect(Collectors.toList())` lager ny liste — aldri `removeAll` på input.
+
+### Bruke returverdi fra rene funksjoner (applyDiscount)
+- **Alvorlighet**: Høy
+- **Bevis fra**: kont-2024 Del 2 — `getTotal()` kaller `discount.applyDiscount(product)` men ignorerer returverdien. Bruker `product.getPrice()` direkte, som aldri er rabattert. Total er alltid full pris.
+- **Gjentakende mønster**: Første observasjon.
+- **Status**: KRITISK GAP — etter ethvert metodekall som returnerer en beregnet verdi: bruk den! Sjekk at du ikke kaster return-verdien.
+
+### NullPointerException ved Map.get() på manglende nøkkel
+- **Alvorlighet**: Høy
+- **Bevis fra**: kont-2024 Del 3 — `isDuplicate()` kaller `reviews.get(product)` som returnerer `null` for nye produkter, deretter krasjer for-each over `null`. Bryter `addReview` totalt for første anmeldelse. kont-2023: lignende mønster med lister.
+- **Gjentakende mønster**: To eksamener — systematisk svakhet ved Map-oppslag.
+- **Status**: KRITISK GJENTAKENDE GAP — etter `Map.get()`: sjekk alltid om resultatet kan være null. Bruk `getOrDefault()`, `containsKey()`, eller `computeIfAbsent()`.
+
+### NaN vs 0.0 ved divisjon med null-teller
+- **Alvorlighet**: Lav
+- **Bevis fra**: kont-2024 Del 3 — `getAverageRatingFor()` returnerer `0.0/0.0 = NaN` istedenfor `0.0` når ingen anmeldelser finnes.
+- **Gjentakende mønster**: Første observasjon.
+- **Status**: Huskeregel: sjekk alltid tom-liste-tilfellet eksplisitt før divisjon. `if (list.isEmpty()) return 0.0;`
+
+### String-sammenligning (== vs .equals()) og Array-sammenligning
+- **Alvorlighet**: Høy
+- **Bevis fra**: ord-2024-2 — `wipe()` bruker `secretCode.equals(WIPE_CODE)` for `char[]`. Arrays.equals() aldri brukt → metoden kan aldri rydde arkivet.
+- **Gjentakende mønster**: Første observasjon for arrays. Direkte variant av klassisk ==/equals-fellen.
+- **Status**: KRITISK GAP — bruk `Arrays.equals(a, b)` for arrays, aldri `.equals()` eller `==`
 
 ### Flervalgsspørsmål (Del 1-teori)
 - **Alvorlighet**: Lav
@@ -118,9 +142,9 @@ Formål: holde oversikt over kunnskapsgap på tvers av alle eksamener, slik at h
 
 *(Oppdateres etter hvert som gap identifiseres — her er topp 3 som krever mest fokus)*
 
-1. **Rekursiv tre-traversering** — kall alltid metoden på BARNET (`child.method()`), aldri på `this`. Øv på TASKS_REKURSJON_TRAVERSERING.md
-2. **Abstrakt metodekontract** — les superklassens JavaDoc for abstract metoder linje for linje og implementer ALLE sideeffekter (startTime/endTime). Sjekk alltid tilgangsmodifikator (`public`). Øv på TASKS_ABSTRAKT_EXECUTE.md
-3. **Getter med transformasjon + case-insensitiv filtrering** — getters kan ha truncering/uppercase-krav. Filtrering kan kreve `Character.toUpperCase()` og validering av ugyldige tegn. Øv på TASKS_GETTER_TRANSFORMASJON.md og TASKS_CASE_INSENSITIV_FILTER.md
+1. **Map.get() kan returnere null** — Gjentakende gap (kont-2023, kont-2024). Etter hvert Map.get()-kall: bruk `getOrDefault()`, `containsKey()`, eller sjekk eksplisitt. Null-iterasjon krasjer alltid.
+2. **Bruk returverdier fra rene funksjoner** — kont-2024: `applyDiscount()` returnerer rabattert pris men verdien ble kastet. Etter hvert metodekall med returtype: bruk returverdien!
+3. **`implements`-deklarasjon og `public` tilgangsmodifikator** — Gjentakende gap (ord-2024-1, ord-2024-2). Etter å ha skrevet en klasse: sjekk `public`? `implements riktigInterface`?
 
 ---
 
@@ -132,3 +156,7 @@ Formål: holde oversikt over kunnskapsgap på tvers av alle eksamener, slik at h
 |------|---------|-----------|------|
 | 2026-05-06 | ord-2025-1 | Full vurdering Del 1-6 | Sterk del 1+2+6. Kritisk bug: getAllParts() uendelig rekursjon. IOException svelges i write(). Estimert B (~86/100) |
 | 2026-05-06 | ord-2024-1 | Full vurdering Del 1-5 | Del 1 perfekt. Del 5 sterk (36/36 tester). Kritisk: WeldChassisStep mangler public + startTime/endTime. Medium: getIsoCountryCode uten uppercase/truncation, filterFactories ikke case-insensitiv. Estimert B (~83/100) |
+| 2026-05-09 | ord-2024-2 | Full vurdering Del 1-5 | Del 1+5 perfekt (45/45 tester). Kritisk: wipe() bruker .equals() på char[] → alltid SecurityException. filterFacilities sjekker feil nivå. ResearchFacility mangler implements IResearchFacility. Estimert B (~88/100) |
+| 2026-05-13 | kont-2023 | Full vurdering Del 1-9 | Kompilerer rent, alle tester grønne. Estimert B+ (~88/100). Eneste reelle feil: getCancelledTickets muterer input-lista. Liten: toString-format. |
+| 2026-05-13 | ord-2022 | Re-vurdering Del 1-4 (Del 5 ekskludert) | Mange bugs fikset siden sist: popAll, countLetters, computeDistance-formel, CharCounterImpl2.countChar. Gjenværende: getCharCount(Predicate) teller nøkler (ikke sum av verdier); computeDistance krasjer pga remove() på umodifiserbar samling. Estimert B (~85 % av Del 1-4) |
+| 2026-05-13 | kont-2024 | Full vurdering Del 1-5 | Del 4+5 nesten feilfri (43/43 tester i Del 5). Alle ShoppingCart/ShippingStatus-tester feiler pga Mockito kan ikke mocke records (infrastrukturfeil). Kritisk: isDuplicate NPE bryter addReview for alle nye produkter. Alvorlig: getTotal ignorerer rabatter (return-verdi kastet). Moderat: addItem legger til 1 ikke quantity. Estimert B+ (~84/100) |

@@ -5,13 +5,19 @@ import shared.ICrewSchedule;
 import shared.IFlight;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class represents a crew schedule for assigning crews to flights.
  */
 public class CrewSchedule implements ICrewSchedule {
-
+    // private int[] maxHours = new int[12]; // int array where index (+1) is the month
+    private Map<IFlight, List<CrewMember>> scheduleMap = new HashMap<>();
+    private int month;
+    private int maxHours;
     // TODO - add your fields here
 
     /**
@@ -27,7 +33,10 @@ public class CrewSchedule implements ICrewSchedule {
      *                                  maximum monthly working hours is below zero.
      */
     public CrewSchedule(int maxMonthlyHours, int month) {
-        // TODO - write your code here.
+        if (maxMonthlyHours < 0 || month < 1 || month > 12) throw new IllegalArgumentException();
+        // this.maxHours[month - 1] = maxMonthlyHours;
+        this.month = month;
+        this.maxHours = maxMonthlyHours;
     }
 
     /**
@@ -40,8 +49,11 @@ public class CrewSchedule implements ICrewSchedule {
      */
     @Override
     public int calculateCrewMemberWorkingHours(CrewMember crewMember) {
-        // TODO - write your code here.
-        return 0;
+        int workingHours = 0;
+        for (Map.Entry<IFlight,List<CrewMember>> entry : scheduleMap.entrySet()) { // iterate over every entry to find flights where crew is scheduled
+            if (entry.getValue().contains(crewMember)) workingHours += entry.getKey().getDuration(); // find the crew and add the working hour (flight duration)
+        }
+        return workingHours;
     }
 
     /**
@@ -53,8 +65,8 @@ public class CrewSchedule implements ICrewSchedule {
      */
     @Override
     public List<CrewMember> getAssignedCrewForFlight(IFlight flight) {
-        // TODO - write your code here.
-        return null;
+        if (flight == null) throw new IllegalArgumentException("Flight is null");
+        return scheduleMap.get(flight);
     }
 
     /**
@@ -72,8 +84,8 @@ public class CrewSchedule implements ICrewSchedule {
      */
     @Override
     public boolean canAssignCrewMemberToFlight(IFlight flight, CrewMember crew) {
-        // TODO - write your code here.
-        return false;
+        if (flight == null || flight.getTimeOfDeparture().getMonthValue() != this.month) throw new IllegalArgumentException();
+        return (calculateCrewMemberWorkingHours(crew) + flight.getDuration() <= this.maxHours);
     }
 
     /**
@@ -93,10 +105,14 @@ public class CrewSchedule implements ICrewSchedule {
      */
     @Override
     public void assignCrewToFlight(IFlight flight, List<CrewMember> crewMembers) {
-        // TODO - write your code here.
+        for (CrewMember member : crewMembers) {
+            if (!canAssignCrewMemberToFlight(flight, member)) throw new IllegalArgumentException();
+        }
+        this.scheduleMap.put(flight, crewMembers);
     }
 
     public static void main(String[] args) {
+        System.out.println(new int[12].length + "");
         // Create some crew members
         CrewMember crew1 = new CrewMember("Alice", "Pilot");
         CrewMember crew2 = new CrewMember("Bob", "Co-pilot");
@@ -130,6 +146,8 @@ public class CrewSchedule implements ICrewSchedule {
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
+
+        System.out.println(crewSchedule.getAssignedCrewForFlight(flight2));
 
     }
 }

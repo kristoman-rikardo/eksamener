@@ -1,5 +1,7 @@
 package com.shopstore.retail.part5;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import no.ntnu.tdt4100.IProduct;
@@ -21,8 +23,9 @@ import no.ntnu.tdt4100.part5.ProductInventory;
  * @see ProductChangeListener
  * @see ProductChange
  */
-public class ProductInventoryManager {
-
+public class ProductInventoryManager implements ProductInventory {
+    private List<ProductChangeListener> listeners = new ArrayList<>();
+    private Map<IProduct, Integer> productStock;
     // TODO: Add the necessary fields to store the products and their stock levels,
     // as well as the listeners
 
@@ -39,8 +42,8 @@ public class ProductInventoryManager {
      *                                  <code>productStock</code> are negative.
      */
     public ProductInventoryManager(Map<IProduct, Integer> productStock) {
-        // TODO: Implement the ProductInventoryManager constructor according to the
-        // javaDoc
+        if (productStock.values().stream().anyMatch(v -> v < 0)) throw new IllegalArgumentException("Some item levels are negative");
+        this.productStock = productStock;
     }
 
     /**
@@ -62,7 +65,14 @@ public class ProductInventoryManager {
      * @see IProduct
      */
     public void increaseStock(IProduct product, int quantity) {
-        // TODO: Implement the increaseStock method according to the javaDoc
+        if (product == null || quantity < 1) throw new IllegalArgumentException("Quantity must be above 0");
+        if (!this.productStock.containsKey(product) || this.productStock.get(product) < 1) {
+            this.productStock.put(product, quantity);
+            this.listeners.stream().forEach(l -> l.productChanged(product, ProductChange.NOW_AVAILABLE));
+        }
+        else {
+            this.productStock.put(product, this.productStock.get(product) + quantity);
+        }
     }
 
     /**
@@ -84,10 +94,35 @@ public class ProductInventoryManager {
      * @see IProduct
      */
     public void reduceStock(IProduct product, int quantity) {
-        // TODO: Implement the reduceStock method according to the javaDoc
+        if (product == null || quantity < 1 || !this.productStock.containsKey(product) || this.productStock.get(product) - quantity < 0) throw new IllegalArgumentException("Quantity must be above 0");
+        if (this.productStock.get(product) - quantity == 0) {
+            this.productStock.remove(product);
+            this.listeners.stream().forEach(l -> l.productChanged(product, ProductChange.OUT_OF_STOCK));
+        }
+        else {
+            this.productStock.put(product, this.productStock.get(product) - quantity);
+        }
     }
 
     // TODO: Implement any other required methods from the ProductInventory
     // interface
+    @Override
+    public void addListener(ProductChangeListener listener) {
+        if (listener == null ) throw new IllegalArgumentException();
+        if (listeners.contains(listener)) return;
+        this.listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(ProductChangeListener listener) {
+        if (listener == null || !this.listeners.contains(listener)) return;
+        this.listeners.remove(listener);
+    }
+
+    @Override
+    public int getStock(IProduct product) {
+        if (product == null || !this.productStock.containsKey(product)) return 0;
+        return this.productStock.get(product);
+    }
 
 }

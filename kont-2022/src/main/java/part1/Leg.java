@@ -5,7 +5,8 @@ package part1;
  * One of them can be the starting or ending post of the race.
  */
 public class Leg {
-
+	private Post startPost;
+	private Post endPost;
 	// TODO: necessary fields and initialisation
 
 	/**
@@ -15,7 +16,9 @@ public class Leg {
 	 * @param endPost the ending post
 	 */
 	public Leg(final Post startPost, final Post endPost) {
-		// TODO: initialization
+		if (startPost == null || endPost == null) throw new IllegalArgumentException();
+		this.startPost = startPost;
+		this.endPost = endPost;
 	}
 
 	/**
@@ -24,24 +27,29 @@ public class Leg {
 	 */
 	@Override
 	public String toString() {
-		// TODO: return a suitable String
-		return "";
+		if (this.startPost.getPostNum() == -1 && this.endPost.getPostNum() == -1) 
+			return "No postNums assigned. Distance: " + this.startPost.distance(endPost) + " meters.";
+		else if (this.startPost.getPostNum() == -1) 
+			return "Start no postNum assigned. endPost: " + this.endPost.getPostNum() + ". Distance: " + this.startPost.distance(endPost) + " meters.";
+		else if (this.endPost.getPostNum() == -1) 
+			return "End no postNum assigned. startPost: " + this.startPost.getPostNum() + ". Distance: " + this.startPost.distance(endPost) + " meters.";
+		else {
+			return "endPost: " + endPost.getPostNum() + ". startPost: " + this.startPost.getPostNum() + ". Distance: " + this.startPost.distance(endPost) + " meters.";
+		}
 	}
 
 	/**
 	 * @return the starting Post of this leg
 	 */
 	public Post getStartPost() {
-		// TODO
-		return null;
+		return this.startPost;
 	}
 
 	/**
 	 * @return the end post of this leg
 	 */
 	public Post getEndPost() {
-		// TODO
-		return null;
+		return this.endPost;
 	}
 
 	// TODO: methods including getters og setters, that you find necessary and useful
@@ -52,7 +60,6 @@ public class Leg {
 	 * @return the distance between the start and end posts
 	 */
 	public double distance() {
-		// TODO: return correct value
-		return 0.0;
+		return this.startPost.distance(this.endPost);
 	}
 }

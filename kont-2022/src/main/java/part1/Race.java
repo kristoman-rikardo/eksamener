@@ -1,11 +1,18 @@
 package part1;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import javafx.geometry.Pos;
 
 public class Race implements Iterable<Post> {
-
+	private Post startPost;
+	private Post finishPost;
+	private List<Post> posts = new ArrayList<>();
 	// TODO: necessary fields and initialisation
 
 	/**
@@ -16,7 +23,10 @@ public class Race implements Iterable<Post> {
 	 * @throws IllegalArgumentException if one or both of the arguments are null
 	 */
 	public Race(final Post startPost, final Post finishPost) {
-		// TODO: initialisation
+		if (startPost == null || finishPost == null) throw new IllegalArgumentException();
+		this.startPost = startPost;
+		this.finishPost = finishPost;
+		this.posts.addAll(List.of(startPost, finishPost));
 	}
 
 	/**
@@ -26,31 +36,31 @@ public class Race implements Iterable<Post> {
 	 * @throws IllegalArgumentException if the argument is null
 	 */
 	public Race(final Post startFinishPost) {
-		// TODO: initialisation
+		if (startPost == null || finishPost == null) throw new IllegalArgumentException();
+		this.startPost = startFinishPost;
+		this.finishPost = startFinishPost;
+		this.posts.addAll(List.of(startPost, finishPost));
 	}
 
 	/**
 	 * @return the start post
 	 */
 	public Post getStartPost() {
-		// TODO
-		return null;
+		return this.startPost;
 	}
 
 	/**
 	 * @return the finish post
 	 */
 	public Post getFinishPost() {
-		// TODO
-		return null;
+		return this.finishPost;
 	}
 
 	/**
 	 * @return the number of posts, including start and finish post
 	 */
 	public int getPostCount() {
-		// TODO
-		return 0;
+		return this.posts.size();
 	}
 
 	/**
@@ -58,16 +68,16 @@ public class Race implements Iterable<Post> {
 	 * @return the post with index num, start post is index 0 and finish post comes last
 	 */
 	public Post getPost(final int num) {
-		// TODO
-		return null;
+		if (num < 0 || num >= getPostCount()) throw new NullPointerException();
+		return this.posts.get(num);
 	}
 
 	/**
 	 * @return all the posts in the order of index, i.e. start first, finish last
 	 */
 	public Post[] getPosts() {
-		// TODO
-		return new Post[0];
+		Post[] postArray = this.posts.toArray(new Post[0]);
+		return postArray;
 	}
 
 	/**
@@ -75,8 +85,7 @@ public class Race implements Iterable<Post> {
 	 */
 	@Override
 	public Iterator<Post> iterator() {
-		// TODO
-		return Collections.emptyIterator();
+		return this.posts.iterator();
 	}
 
 	/**
@@ -86,7 +95,8 @@ public class Race implements Iterable<Post> {
 	 * @throws IllegalArgumentException if this provided post isn't one of this race's intermediate posts
 	 */
 	public void removePost(final Post post) {
-		// TODO
+		if (post == null || this.posts.indexOf(post) < 1 || this.posts.indexOf(post) >= getPostCount() - 1) throw new IllegalArgumentException();
+		this.posts.remove(post);
 	}
 
 	/**
@@ -98,8 +108,7 @@ public class Race implements Iterable<Post> {
 	 * @return an iterator that returns all posts within a certain distance from the reference point
 	 */
 	public Iterator<Post> findPostsNearby(final double east, final double north, final double distance) {
-		// TODO
-		return Collections.emptyIterator();
+		return this.posts.stream().filter(p -> p.distance(east, north) <= distance).collect(Collectors.toList()).iterator();
 	}
 
 	/**
@@ -116,8 +125,10 @@ public class Race implements Iterable<Post> {
 	 * @throws IllegalArgumentException if the post is too close to another post (see distanceEpsilon)
 	 */
 	public Post addPost(final double east, final double north) {
-		// TODO
-		return null;
+		if (findPostsNearby(east, north, Race.distanceEpsilon).hasNext()) throw new IllegalArgumentException();
+		Post post = new Post(east, north);
+		this.posts.add(getPostCount() - 1, post); // list initiated with to elems, no risk for Index OOB
+		return post;
 	}
 
 	/**
@@ -127,7 +138,9 @@ public class Race implements Iterable<Post> {
 	 * the third postNum=3 and the finish post postNum=4.
 	 */
 	public void assignPostNums() {
-		// TODO
+		for (int i = 0; i < getPostCount(); i++) {
+			getPost(i).setPostNum(i);
+		}
 	}
 
 	//

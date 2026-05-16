@@ -15,8 +15,7 @@ import java.util.Map;
  * @see ShipmentUpdate
  * 
  */
-public record Shipment(
-        int id,
+public record Shipment(int id,
         LocalDateTime createdDateTime,
         Map<IProduct, Integer> productsContained,
         List<ShipmentUpdate> updates) {

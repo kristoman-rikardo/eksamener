@@ -12,6 +12,10 @@ public class Controller {
 	@FXML
 	void handleKvadrer() {
 		final String s = innput.getText();
-		// TODO
+		try {
+			output.setText(s + " * " + s + " = " + Math.exp(Integer.parseInt(s)));
+		} catch (Exception e) {
+			output.setText('"' + s + "\" er ikke et tall");
+		}
 	}
 }

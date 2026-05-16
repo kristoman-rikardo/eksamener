@@ -1,6 +1,9 @@
 package part3;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Implementation of CharCounter that accepts only letters,
@@ -8,36 +11,40 @@ import java.util.Collection;
  */
 
 public class CharCounterImpl2 implements CharCounter {
-
+	private final String acceptedChars = "qwertyuiopasdfghjklzxcvbnm"; // assuming english alphabet
+	private int[] counters = new int[26]; // make an int array in alphabetic order normalized 
 	// TODO: fields, but no use of Map or Map-implementation
 
 	@Override
 	public boolean acceptsChar(final char c) {
-		// TODO
-		return false;
+		return acceptedChars.indexOf(Character.toLowerCase(c)) != -1;
 	}
 
 	@Override
 	public void countChar(final char c, final int increment) throws IllegalArgumentException {
-		// TODO
+		if (increment < 1 || !acceptsChar(c)) throw new IllegalArgumentException();
+		if (acceptsChar(c)) this.counters[Character.toLowerCase(c) - 'a'] += increment;
 	}
 
 	@Override
 	public Collection<Character> getCountedChars() {
-		// TODO
-		return null;
+		List<Character> countedChars = new ArrayList<>();
+		int i;
+		for (i = 0; i < 26; i++) {
+			if (counters[i] != 0) countedChars.add((char) (i + 'A')); // could change the normalisation if i want lower case
+		}
+		return countedChars;
 	}
 
 	@Override
 	public int getCharCount(final char c) {
-		// TODO
+		if (acceptsChar(c)) return this.counters[Character.toLowerCase(c) - 'a'];
 		return 0;
 	}
 
 	@Override
 	public int getTotalCharCount() {
-		// TODO
-		return 0;
+		return Arrays.stream(this.counters).sum();
 	}
 
 	public static void main(String[] args) {

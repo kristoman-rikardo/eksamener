@@ -1,9 +1,12 @@
 package com.shopstore.retail.part2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import no.ntnu.tdt4100.IProduct;
@@ -32,17 +35,11 @@ public class ProductAnalytics {
      * @see IProduct
      * @see List
      */
-    // TODO: Implement the getNumberOfProductsByPredicate method
-    // TODO: The parameters of the method should be in the following order:
+    // xTODO: Implement the getNumberOfProductsByPredicate method
+    // xTODO: The parameters of the method should be in the following order:
     // products, predicate
-
     public int getNumberOfProductsByPredicate(List<IProduct> products, Predicate<IProduct> predicate) {
-        if (products == null || predicate == null) throw new IllegalArgumentException();
-        int c = 0;
-        for (IProduct product : products) {
-            if (predicate.test(product)) c++;
-        }
-        return c;
+        return (int) products.stream().filter(p -> predicate.test(p)).count();
     }
 
     /**
@@ -63,22 +60,21 @@ public class ProductAnalytics {
      * @see ProductOrder#getItems()
      * @see Map#keySet()
      */
-    // TODO: Implement the getDiscountsApplicableForProductOrder method
-    // TODO: The parameters of the method should be in the following order:
+    // xTODO: Implement the getDiscountsApplicableForProductOrder method
+    // xTODO: The parameters of the method should be in the following order:
     // productOrder, discounts
+
     public List<ProductDiscount> getDiscountsApplicableForProductOrder(ProductOrder productOrder, List<ProductDiscount> discounts) {
-        if (productOrder == null) throw new IllegalArgumentException();
-        Map<IProduct, Integer> order = productOrder.getItems();
-        List<ProductDiscount> applicableDiscounts = new ArrayList<>();
-        for (IProduct product : order.keySet()) {
+        Set<IProduct> products = productOrder.getItems().keySet();
+        Set<ProductDiscount> viableDiscounts = new HashSet<>();
+        for (IProduct product : products) {
             for (ProductDiscount discount : discounts) {
-                if (discount.isApplicableTo(product)) applicableDiscounts.add(discount);
+                if (discount.isApplicableTo(product)) viableDiscounts.add(discount); // add every viable discount
+                if (viableDiscounts.size() == discounts.size()) return new ArrayList<>(viableDiscounts); // if this checks, the max possibility is in and we can break looping
             }
         }
-        return applicableDiscounts;
+        return new ArrayList<>(viableDiscounts);
     }
-
-
     /**
      * Finds and returns the vendor with the most amount of products in a list of
      * products. The vendor is defined by a String, and can be found by calling the
@@ -90,29 +86,12 @@ public class ProductAnalytics {
      * 
      * @see IProduct#getVendor()
      */
-    // TODO: Implement the getMostPopularVendor method
-
+    // xTODO: Implement the getMostPopularVendor method
     public String getMostPopularVendor(List<IProduct> products) {
-        if (products == null) throw new IllegalArgumentException();
-        if (products.size() < 1) return null;
-        HashMap<String, Integer> vendorsAssortment = new HashMap<>();
+        Map<String, Integer> vendorMap = new HashMap<>();
         for (IProduct product : products) {
-            String vendorName = product.getVendor();
-            if (vendorsAssortment.containsKey(vendorName)) {
-                vendorsAssortment.put(vendorName, vendorsAssortment.get(vendorName) + 1);
-            }
-            else {
-                vendorsAssortment.put(vendorName, 1);
-            }
+            vendorMap.merge(product.getVendor(), 1, Integer::sum);
         }
-        String maxLoc = null;
-        int maxVal = 0;
-        for (Map.Entry<String, Integer> vendor : vendorsAssortment.entrySet()) {
-            if (maxVal < vendor.getValue()) {
-                maxVal = vendor.getValue();
-                maxLoc = vendor.getKey();
-            }
-        }
-        return maxLoc;
+        return Collections.max(vendorMap.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 }

@@ -1,12 +1,16 @@
 package part3;
 
+// import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+// import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+// import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -75,7 +79,10 @@ public class CharCounterImpl implements CharCounter {
 	 * @throws IllegalArgumentException if some characters are not accepted
 	 */
 	public void add(final CharCounter cc) {
-		// TODO
+		for (char c : cc.getCountedChars()) {
+			if (!this.acceptsChar(c)) throw new IllegalArgumentException("Character not accepted: " + c);
+			this.counters.merge(c, cc.getCharCount(c), Integer::sum);
+		}
 	}
 
 	/**
@@ -84,8 +91,10 @@ public class CharCounterImpl implements CharCounter {
 	 * @return the counted chars as a String
 	 */
 	public String getCountedCharsAsString() {
-		// TODO
-		return null;
+		StringBuilder sb = new StringBuilder();
+		getCountedChars()
+		.stream().forEach(s -> sb.append(Character.toLowerCase(s)));
+		return sb.toString();
 	}
 
 	/**
@@ -95,8 +104,7 @@ public class CharCounterImpl implements CharCounter {
 	 * @return the char count ignoring case
 	 */
 	public int getCharCountIgnoreCase(final char c) {
-		// TODO
-		return 0;
+		return getCharCount(Character.toLowerCase(c)) + getCharCount(Character.toUpperCase(c));
 	}
 
 	/**
@@ -107,8 +115,7 @@ public class CharCounterImpl implements CharCounter {
 	 * @return the sum of the counts for characters satisfying the predicate
 	 */
 	public int getCharCount(final Predicate<Character> chars) {
-		// TODO
-		return 0;
+		return (int) this.counters.keySet().stream().filter(chars).count();
 	}
 
 	/**
@@ -117,7 +124,9 @@ public class CharCounterImpl implements CharCounter {
 	 * @param s the source of characters
 	 */
 	public void countChars(final String s) {
-		// TODO
+		for (char c : s.toCharArray()) {
+			if (acceptsChar(c)) this.counters.merge(c, 1, Integer::sum);
+		}
 	}
 
 	/**
@@ -126,7 +135,10 @@ public class CharCounterImpl implements CharCounter {
 	 * @param chars the source of characters
 	 */
 	public void countChars(final Iterator<Character> chars) {
-		// TODO
+		while (chars.hasNext()) {
+			char c = chars.next();
+			if (acceptsChar(c)) this.counters.merge(c, 1, Integer::sum);
+		}
 	}
 
 	/**
@@ -135,7 +147,9 @@ public class CharCounterImpl implements CharCounter {
 	 * @param chars the source of characters
 	 */
 	public void countChars(final Iterable<Character> chars) {
-		// TODO
+		for (char c : chars) {
+			if (acceptsChar(c)) this.counters.merge(c, 1, Integer::sum);
+		}
 	}
 
 	/**
@@ -144,7 +158,9 @@ public class CharCounterImpl implements CharCounter {
 	 * @param chars the source of characters
 	 */
 	public void countChars(final Stream<? extends CharSequence> chars) {
-		// TODO
+		chars.forEach(s -> {
+			countChars(s.toString());
+		});
 	}
 
 	/**
@@ -154,7 +170,11 @@ public class CharCounterImpl implements CharCounter {
 	 * @throws IOException
 	 */
 	public void countChars(final Reader chars) throws IOException {
-		// TODO
+		int c;
+		while ((c = chars.read()) != -1) {
+			if (acceptsChar((char) c)) this.counters.merge((char) c, 1, Integer::sum);
+			}
+		chars.close(); 
 	}
 
 	/**
@@ -164,7 +184,9 @@ public class CharCounterImpl implements CharCounter {
 	 * @throws IOException
 	 */
 	public void countChars(final InputStream chars) throws IOException {
-		// TODO
+		Reader reader = new InputStreamReader(chars);
+		countChars(reader);
+		reader.close();
 	}
 
 	public static void main(String[] args) {

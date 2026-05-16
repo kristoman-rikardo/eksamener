@@ -18,7 +18,7 @@ public class Task6 extends AbstractTask6 {
         Comparator_can_be_implemented_with_a_lambda_expression();
         // A_class_can_only_implement_a_single_interface_in_Java();
         // An_interface_can_extend_a_class_in_Java();
-        An_interface_can_extend_multiple_interfaces_in_Java();
+        // An_interface_can_extend_multiple_interfaces_in_Java();
         // The_compareTo_function_in_Comparable_returns_a_Comparator();
 
     }

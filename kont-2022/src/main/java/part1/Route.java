@@ -1,7 +1,9 @@
 package part1;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a certain order of post that must be visited.
@@ -9,8 +11,7 @@ import java.util.Iterator;
  * Leg N will be from post N to post N + 1
  */
 public class Route implements Iterable<Post> {
-
-	// TODO: necessary fields and initialisation
+	private final List<Post> posts;
 
 	/**
 	 * Initializes this route with the provided posts.
@@ -18,7 +19,9 @@ public class Route implements Iterable<Post> {
 	 * @param posts the posts in-order
 	 */
 	public Route(final Iterator<Post> posts) {
-		// TODO: initialisation
+		if (posts == null) throw new IllegalArgumentException();
+		this.posts = new ArrayList<>();
+		posts.forEachRemaining(this.posts::add);
 	}
 
 	/**
@@ -27,7 +30,9 @@ public class Route implements Iterable<Post> {
 	 * @param posts the posts in-order
 	 */
 	public Route(final Iterable<Post> posts) {
-		// TODO: initialisation
+		if (posts == null) throw new IllegalArgumentException();
+		this.posts = new ArrayList<>();
+		for (Post p : posts) this.posts.add(p);
 	}
 
 	/**
@@ -36,7 +41,8 @@ public class Route implements Iterable<Post> {
 	 * @param posts the posts in-order
 	 */
 	public Route(final Collection<Post> posts) {
-		// TODO: initialisation
+		if (posts == null) throw new IllegalArgumentException();
+		this.posts = new ArrayList<>(posts);
 	}
 
 	/**
@@ -45,8 +51,7 @@ public class Route implements Iterable<Post> {
 	 * @return the number of legs
 	 */
 	public int getLegCount() {
-		// TODO
-		return 0;
+		return posts.size() - 1;
 	}
 
 	/**
@@ -56,8 +61,8 @@ public class Route implements Iterable<Post> {
 	 * @return the leg with the specified number
 	 */
 	public Leg getLeg(final int num) {
-		// TODO
-		return null;
+		if (num < 0 || num >= posts.size()) throw new IllegalArgumentException("Leg not within the route");
+		return new Leg(posts.get(num), posts.get(num + 1));
 	}
 
 	/**
@@ -65,8 +70,7 @@ public class Route implements Iterable<Post> {
 	 */
 	@Override
 	public Iterator<Post> iterator() {
-		// TODO
-		return null;
+		return new ArrayList<>(posts).iterator();
 	}
 
 	/**
@@ -75,11 +79,8 @@ public class Route implements Iterable<Post> {
 	 * @return the total distance of this route
 	 */
 	public double distance() {
-		// TODO
-		return 0.0;
+		return distance(this);
 	}
-
-	//
 
 	/**
 	 * Computes the sum of the distances between the provided posts,
@@ -88,8 +89,7 @@ public class Route implements Iterable<Post> {
 	 * @return the total distance of this sequence of posts
 	 */
 	public static double distance(final Iterable<Post> posts) {
-		// TODO
-		return 0.0;
+		return distance(posts.iterator());
 	}
 
 	/**
@@ -99,7 +99,24 @@ public class Route implements Iterable<Post> {
 	 * @return the total distance of this sequence of posts
 	 */
 	public static double distance(final Iterator<Post> posts) {
-		// TODO
-		return 0.0;
+		double distance = 0.0;
+		if (!posts.hasNext()) return distance;
+		Post former = posts.next();
+		while (posts.hasNext()) {
+			Post next = posts.next();
+			distance += former.distance(next);
+			former = next;
+		}
+		return distance;
+	}
+
+	public boolean containsPost(Post post) {
+		if (post == null) return false;
+		return (this.posts.contains(post));
+	}
+
+	public Post getPost(int i) {
+		if (i < 0 || i >= this.posts.size()) throw new IllegalArgumentException();
+		return this.posts.get(i);
 	}
 }

@@ -1,12 +1,15 @@
 package part2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import shared.IBaggageCarousel;
 import shared.IFlight;
 
 public class BaggageCarousel implements IBaggageCarousel {
-
+    private int carouselNumber;
+    private List<IFlight> flightQueue = new ArrayList<>();
+    private IFlight assignedFlight;
     // TODO - add your fields here
 
     /**
@@ -15,7 +18,7 @@ public class BaggageCarousel implements IBaggageCarousel {
      * @param carouselNumber The numerical ID of the baggage carousel.
      */
     public BaggageCarousel(int carouselNumber) {
-        // TODO - write your code here.
+        this.carouselNumber = carouselNumber;
     }
 
     /**
@@ -25,8 +28,7 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public int getCarouselNumber() {
-        // TODO - write your code here.
-        return 0;
+        return this.carouselNumber;
     }
 
     /**
@@ -38,8 +40,7 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public IFlight getCurrentFlight() {
-        // TODO - write your code here.
-        return null;
+        return this.assignedFlight;
     }
 
     /**
@@ -49,8 +50,7 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public List<IFlight> getFlightQueue() {
-        // TODO - write your code here.
-        return null;
+        return this.flightQueue;
     }
 
     /**
@@ -63,7 +63,13 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public void addFlightToQueue(IFlight flight) {
-        // TODO - write your code here.
+        if (flight == null) throw new IllegalArgumentException();
+        if (getCurrentFlight() == null) {
+            this.assignedFlight = flight;
+            return;
+        }
+        this.flightQueue.add(flight);
+
     }
 
     /**
@@ -74,7 +80,11 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public void clearFlight() {
-        // TODO - write your code here.
+        this.assignedFlight = null; 
+        if (getFlightQueue().size() > 0) {
+            this.assignedFlight = this.flightQueue.get(0);
+            this.flightQueue.remove(0);
+        }
     }
 
     /**
@@ -84,8 +94,7 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public boolean isAvailable() {
-        // TODO - write your code here.
-        return false;
+        return (getCurrentFlight() == null);
     }
 
     /**
@@ -103,8 +112,10 @@ public class BaggageCarousel implements IBaggageCarousel {
      */
     @Override
     public String toString() {
-        // TODO - write your code here.
-        return null;
+        if (isAvailable()) return "BaggageCarousel " + this.carouselNumber + ": Available";
+        return "BaggageCarousel " + this.carouselNumber
+         + ": Flight" + getCurrentFlight().getFlightNumber()
+         + "," + getFlightQueue().size() + " flights waiting";
     }
 
 }

@@ -2,8 +2,13 @@ package part9;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 
 import shared.Flight;
@@ -19,8 +24,13 @@ public class AirlineUtils {
      *         is empty, it should return 0.0.
      */
     public static double getAverageFlightDuration(List<IFlight> flights) {
-        // TODO - write your code here
-        return 0.0;
+        int durSum = 0;
+        int nFlights = flights.size();
+        if (flights == null || nFlights < 1) return 0.0;
+        for (IFlight flight : flights) {
+            durSum += flight.getDuration();
+        }
+        return ((double) durSum) / ((double) nFlights);
     }
 
     /**
@@ -32,8 +42,7 @@ public class AirlineUtils {
      * @return an Optional containing the result of the reduction
      */
     public static Optional<IFlight> reduceFlights(List<IFlight> flights, BinaryOperator<IFlight> accumulator) {
-        // TODO - write your code here
-        return null;
+        return flights.stream().reduce(accumulator);
     }
 
     /**
@@ -49,8 +58,17 @@ public class AirlineUtils {
      * @return a list of IFlights that meet the cancellation rules.
      */
     public static List<IFlight> getFlightsToCancel(List<IFlight> flights) {
-        // TODO - write your code here
-        return null;
+        Set<IFlight> result = new HashSet<>();
+        Map<String, List<IFlight>> tripMap = new HashMap<>(); // set to combat duplicates
+        for (IFlight flight : flights) {
+            String trip = flight.getOrigin() +":" + flight.getDestination();
+            tripMap.computeIfAbsent(trip, k -> new ArrayList<>()).add(flight); // making a map for checking similair trip orgin/destination pairs
+            if (flight.getDuration() < 1 || flight.getDuration() > 16) result.add(flight); // while we're iterating, also check the second rule
+        }
+        for (List<IFlight> flightList : tripMap.values()) { // iterate map to see what dst-org pairs had above 3 flights
+            if (flightList.size() > 3) result.addAll(flightList);
+        }
+        return new ArrayList<>(result);
     }
 
     public static void main(String[] args) {

@@ -1,9 +1,14 @@
 package part4;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import part3.CharCounter;
+import part3.CharCounterImpl;
 
 public class CharCounterUtil {
 
@@ -16,8 +21,11 @@ public class CharCounterUtil {
 	 * @throws IOException if reading goes wrong
 	 */
 	public static CharCounter countLetters(final File file) throws IOException {
-		// TODO
-		return null;
+		CharCounterImpl cc = new CharCounterImpl(Character::isLetter);
+		try (FileInputStream stream = new FileInputStream(file)) {
+    		cc.countChars(stream);
+		}
+		return cc;
 	}
 
 	/**
@@ -32,8 +40,26 @@ public class CharCounterUtil {
 	 * @return
 	 */
 	public static double computeDistance(final CharCounter cc1, final CharCounter cc2) {
-		// TODO
-		return 0.0;
+		double charTotCount1 = cc1.getTotalCharCount();
+		double charTotCount2 = cc2.getTotalCharCount();
+		Collection<Character> charsCounted1 = cc1.getCountedChars();
+		Collection<Character> charsCounted2 = cc2.getCountedChars();
+		List<Double> freqDiff = new ArrayList<>();
+		for (char c : charsCounted1) {
+			if (charsCounted2.contains(c)) {
+				freqDiff.add(((double) cc2.getCharCount(c) / charTotCount2) - ((double) cc1.getCharCount(c) / charTotCount1)); // adding difference for the intersecting characters
+				charsCounted2.remove(c);
+			}
+			else {
+				freqDiff.add(((double) cc1.getCharCount(c) / charTotCount1)); // adding frequency for unique elements for cc1
+			}
+		}
+		charsCounted2.stream().forEach(c -> freqDiff.add((double) cc2.getCharCount(c) / charTotCount2)); // adding frequency for unique elements for cc2
+		double distance = 0;
+		for (double d : freqDiff) {
+			distance += d * d;
+		}
+		return distance;
 	}
 
 	/**
@@ -46,7 +72,31 @@ public class CharCounterUtil {
 	 * @return the unmodifiable view of the specified CharCounter
 	 */
 	public static CharCounter unmodifiableCharCounter(final CharCounter delegate) {
-		// TODO
-		return null;
+		return new CharCounter() {
+			@Override
+			public Collection<Character> getCountedChars() {
+				return delegate.getCountedChars();
+			}
+
+			@Override
+			public boolean acceptsChar(char c) {
+				return delegate.acceptsChar(c);
+			}
+
+			@Override
+			public int getTotalCharCount() {
+				return delegate.getTotalCharCount();
+			}
+
+			@Override
+			public int getCharCount(char c) {
+				return delegate.getCharCount(c);
+			}
+
+			@Override
+			public void countChar(char c, int increment) {
+				throw new UnsupportedOperationException();
+			}
+		};
 	}
 }

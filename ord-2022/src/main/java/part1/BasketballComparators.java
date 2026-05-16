@@ -34,8 +34,7 @@ public class BasketballComparators {
 	 *          comparator, a player with height 220 will rank before a player with height 205.
 	 */
 	public static Comparator<Player> getHeightComparator() {
-		// TODO
-		return null;
+		return (a, b) -> b.getHeight() - a.getHeight();
 	}
 
 	/**
@@ -49,10 +48,20 @@ public class BasketballComparators {
 	 *
 	 */
 	public static Comparator<Player> getTrueShootingPercentageComparator() {
-		// TODO
-		return null;
-	}
+		return (a, b) -> {
+			double tsB = (double) b.getSeasonStats().stream().mapToInt(s -> s.getPointsScored()).sum()
+					/ (2.0 * (b.getSeasonStats().stream().mapToInt(s -> s.getFieldGoalAttempts()).sum()
+							+ 0.44 * b.getSeasonStats().stream().mapToInt(s -> s.getFreeThrowAttempts()).sum()));
 
+			double tsA = (double) a.getSeasonStats().stream().mapToInt(s -> s.getPointsScored()).sum()
+					/ (2.0 * (a.getSeasonStats().stream().mapToInt(s -> s.getFieldGoalAttempts()).sum()
+							+ 0.44 * a.getSeasonStats().stream().mapToInt(s -> s.getFreeThrowAttempts()).sum()));
+
+			int cmp = Double.compare(tsB, tsA);  
+			if (cmp != 0) return cmp;
+			return a.getName().compareTo(b.getName()); 
+		};
+	}
 	public static void main(String[] args) {
 		//Disclaimer: The names and statistics below are just made up
 

@@ -3,6 +3,7 @@ package com.shopstore.retail.part3;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import no.ntnu.tdt4100.Customer;
 import no.ntnu.tdt4100.IProduct;
@@ -22,8 +23,7 @@ import no.ntnu.tdt4100.part3.ProductReview;
  * already declared as private.
  */
 public class ProductReviewSystem {
-    private final static HashMap<IProduct, ArrayList<ArrayList<Object>>> reviews = new HashMap<>();
-
+    public static Map<IProduct, List<ProductReview>> reviews = new HashMap<>();
     private ProductReviewSystem() {
         // WARNING: DO NOT REMOVE THIS CONSTRUCTOR OR ADD ANY MORE CONSTRUCTORS
     }
@@ -67,22 +67,18 @@ public class ProductReviewSystem {
     // product, customer, reviewText, rating
 
     public static void addReview(IProduct product, Customer customer, String reviewText, double rating) throws InvalidReviewException {
-        if (product == null || customer == null || reviewText == null) throw new IllegalArgumentException();
-        if (rating >= 1.0 && rating <= 5.0 && reviewText.length() <= 240) {
-            if (reviews.containsKey(product)) {
-                ArrayList<ArrayList<Object>> productReviews = reviews.get(product);
-                for (ArrayList<Object> row : productReviews) {
-                    if (row.equals(new ArrayList<>(List.of(customer, reviewText, rating)))) throw new InvalidReviewException(product, "Review identical to a former review.");
-                }
-                reviews.get(product).add(new ArrayList<>(List.of(customer, reviewText, rating)));
-            }
-            else {
-                reviews.put(product, new ArrayList<>(List.of(new ArrayList<>(List.of(customer, reviewText, rating)))));
-            }
+        if (product == null || customer == null) throw new IllegalArgumentException();
+        if (rating < 1.0 || rating > 5.0) throw new InvalidReviewException(product, "Rating outside valid interval");
+        if (reviewText.length() > 240 || isDuplicate(product, reviewText)) throw new InvalidReviewException(product, "Too long or duplicate reviewText");
+        reviews.computeIfAbsent(product, x -> new ArrayList<>()).add(new ProductReview(product, customer, reviewText, rating));
+    }
+
+    public static boolean isDuplicate(IProduct product, String reviewText) { // support method for finding duplicates
+        List<ProductReview> reviewsForProduct = reviews.get(product);
+        for (ProductReview review : reviewsForProduct) {
+            if (review.reviewText().equals(reviewText)) return true;
         }
-        else {
-            throw new InvalidReviewException(product, "Review too long or rating outside interval.");
-        }
+        return false;
     }
 
     /**
@@ -96,15 +92,9 @@ public class ProductReviewSystem {
      * @see ProductReview#product()
      */
     // TODO: Implement the static getReviewsFor method
-
     public static List<ProductReview> getReviewsFor(IProduct product) {
-        ArrayList<ArrayList<Object>> productReviews = reviews.get(product);
-        ArrayList<ProductReview> productReview = new ArrayList<>();
-        for (ArrayList<Object> review : productReviews) {
-            ProductReview newReview = new ProductReview(product, review.get(0), review.get(1), review.get(2));
-            productReview.add(newReview);
-        }
-        return productReview;
+        if (product == null || !reviews.containsKey(product)) return List.of();
+        return reviews.get(product);
     }
 
     /**
@@ -122,10 +112,14 @@ public class ProductReviewSystem {
      * @see List#size()
      */
     // TODO: Implement the static getAverageRatingFor method
-
     public static double getAverageRatingFor(IProduct product) {
-        if (product == null) throw new IllegalArgumentException("Arg cannot be null");
-        ArrayList<ProductReview> productReviews = 
+        List<ProductReview> reviewsForProduct = getReviewsFor(product);
+        double size = reviewsForProduct.size(); // cast to double to be safe
+        double total = 0.0;
+        for (ProductReview review : reviewsForProduct) {
+            total += review.rating();
+        }
+        return total / size;
     }
 
 }

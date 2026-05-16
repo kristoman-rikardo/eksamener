@@ -1,7 +1,10 @@
 package part4;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+// import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class TicketHandler {
 
@@ -18,7 +21,13 @@ public class TicketHandler {
      *                                  BusinessTicket.
      */
     public static BusinessTicket upgradeTicket(Ticket ticket, int carryOnBags) {
-        return null;
+        if (ticket instanceof BusinessTicket) throw new IllegalArgumentException("Ticket already business"); // if ticket aready is business ticket
+        return new BusinessTicket(ticket.getTicketNumber(), 
+            ticket.getPassengerName(),
+            ticket.getPrice() + 100, // add 100 to the price
+            ticket.getCheckedBaggage(),
+            ticket.getCarryOnBags() + carryOnBags, // add the wanted number of carry on bags
+            false);
     }
 
     /**
@@ -31,7 +40,12 @@ public class TicketHandler {
      * @return A new List of Tickets sorted based on class and priority boarding.
      */
     public static List<Ticket> getBoardingOrder(List<Ticket> tickets) {
-        return null;
+        if (tickets == null) throw new IllegalArgumentException();
+        List<Ticket> sorted = new ArrayList<>();
+        sorted.addAll(tickets.stream().filter(b -> b instanceof BusinessTicket).collect(Collectors.toList())); // add all business tickets
+        sorted = sorted.stream().sorted(Comparator.comparing(Ticket::hasPriorityBoarding).reversed()).collect(Collectors.toList()); // sort by boarding priority
+        sorted.addAll(tickets.stream().filter(b -> b instanceof EconomyTicket).collect(Collectors.toList())); // add all economy tickets
+        return sorted;
     }
 
     /**
@@ -42,7 +56,13 @@ public class TicketHandler {
      * @return A new List of Tickets that are not cancelled.
      */
     public static List<Ticket> getCancelledTickets(List<Ticket> tickets) {
-        return null;
+        List<Ticket> cancelled = tickets.stream()
+            .filter(b -> b instanceof BusinessTicket)
+            .map(b -> (BusinessTicket) b)
+            .filter(b -> b.isCancelled())
+            .collect(Collectors.toList());
+        tickets.removeAll(cancelled);
+        return tickets;
     }
 
     public static void main(String[] args) {

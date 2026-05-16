@@ -37,9 +37,10 @@ public class Task10 {
         Customer c3 = new Customer(3, "Charlie", "test3@test.com", "789 Fake St.");
         Customer c1 = new Customer(1, "Alice", "test@test.com", "123 Fake St.");
         Customer c2 = new Customer(2, "Bob", "test2@test.com", "456 Fake St.");
-        Customer c4 = new Customer(4, "Bob", "ja@va.sucks", "bad 23");    // Any other code you need to test the method...
-        ArrayList<Customer> list = new ArrayList<>(List.of(c1, c2, c3, c4));
-        x.sortMe(list);
-        System.out.println(list);
+        List<Customer> sortList = new ArrayList<>(List.of(c3, c2, c1));
+        System.out.println(sortList);
+        x.sortMe(sortList);
+        System.out.println(sortList);
+        // Any other code you need to test the method...
     }
 }

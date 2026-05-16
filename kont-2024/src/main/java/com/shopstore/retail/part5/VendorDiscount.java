@@ -1,5 +1,8 @@
 package com.shopstore.retail.part5;
 
+import no.ntnu.tdt4100.AbstractDiscount;
+import no.ntnu.tdt4100.IProduct;
+
 /**
  * This class represents a discount that is applicable {@link IProduct} objects
  * from a specific vendor.
@@ -16,8 +19,8 @@ package com.shopstore.retail.part5;
  * @see IProduct
  * @see IProduct#getVendor()
  */
-public class VendorDiscount {
-
+public class VendorDiscount extends AbstractDiscount {
+    private String vendor;
     /**
      * Creates a new vendor discount with a discount code of the given length,
      * discount percentage, and vendor name.
@@ -29,6 +32,13 @@ public class VendorDiscount {
      * @see AbstractDiscount#AbstractDiscount(int, double)
      */
     // TODO: Implement the constructor for the VendorDiscount class
+    public VendorDiscount(int codeLength, double discountPercent, String vendor) {
+        super(codeLength, discountPercent);
+        this.vendor = vendor;
+    }
 
     // TODO: Implement the isApplicableTo method from the AbstractDiscount class
+    public boolean isApplicableTo(IProduct product) {
+        return (product.getVendor().equals(this.vendor));
+    }
 }

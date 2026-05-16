@@ -2,7 +2,10 @@ package com.shopstore.retail.part2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import no.ntnu.tdt4100.Customer;
 import no.ntnu.tdt4100.IProduct;
@@ -24,10 +27,10 @@ import no.ntnu.tdt4100.ProductOrder;
  * 
  */
 public class ShoppingCart implements ProductOrder {
-    private Customer customer;
-    private HashMap<IProduct, Integer> cartMap;
-    private ArrayList<ProductDiscount> usedDiscounts;
-
+    private Customer cutsomer;
+    private Map<IProduct, Integer> shoppingCart = new HashMap<>();
+    private List<ProductDiscount> discountsUsed = new ArrayList<>();
+    private Set<ProductDiscount> discountsAdded = new HashSet<>();
     /**
      * Creates a new shopping cart for a customer. An
      * {@link IllegalArgumentException} should be thrown if the customer is null.
@@ -39,13 +42,69 @@ public class ShoppingCart implements ProductOrder {
      * 
      * @see no.ntnu.tdt4100.Customer
      */
-    // TODO: Implement the ShoppingCart constructor
-
+    // xTODO: Implement the ShoppingCart constructor
     public ShoppingCart(Customer customer) {
         if (customer == null) throw new IllegalArgumentException();
-        this.customer = customer;
+        this.cutsomer = customer;
     }
 
+
+    /**
+     * This method should return the customer associated with the order.
+     *
+     * @return The customer associated with the order, of type {@link Customer}.
+     */
+    public Customer getCustomer() {
+        return this.cutsomer;
+    }
+
+    /**
+     * Returns the total price of all items in the order. This should be the sum of
+     * the prices of all items in the ProductOrder, minus any discounts that might
+     * apply to the various products. In the case of multiple discounts applying to
+     * the same product, only the discount that gives the biggest reduction in price
+     * should be applied.
+     *
+     * @return The total price of all items in the order minus any discounts. The
+     *         price should be of the primitive type double.
+     * 
+     * @see no.ntnu.tdt4100.ProductDiscount#applyDiscount(IProduct)
+     * @see no.ntnu.tdt4100.ProductDiscount#isApplicableTo(IProduct)
+     * @see no.ntnu.tdt4100.ProductDiscount#getDiscountPercentage()
+     */
+    public double getTotal() {
+        for (ProductDiscount discount : discountsAdded) { // apply all (unique) discounts
+            for (Map.Entry<IProduct, Integer> entry : shoppingCart.entrySet()) { // loop all products for each discount and apply
+                IProduct product = entry.getKey();
+                if (discount.isApplicableTo(product)) {
+                    discount.applyDiscount(product); 
+                }
+            }
+        }
+        double total = 0.0;
+        for (Map.Entry<IProduct, Integer> entry : shoppingCart.entrySet()) { // assuming one can add the same discount to several products, just not different rounds
+            IProduct product = entry.getKey();
+            int quantity = entry.getValue();
+            total += product.getPrice() * quantity;
+        }
+        return total;
+    }
+
+    /**
+     * This method should return a map of all items in the order, with their
+     * corresponding quantities. The keys in the map should be the products, and
+     * these must be unique. The values of the map should be the quantities of the
+     * products added to the order, which must be positive integers (greater than
+     * 0).
+     *
+     * @return A {@link Map} of all unique products as keys of type
+     *         {@link IProduct} and the quantities of the products as values of
+     *         type {@link Integer}.
+     */
+    public Map<IProduct, Integer> getItems() {
+        return this.shoppingCart;
+    }
+    
     /**
      * Adds a quantity of a product to the shopping cart.
      *
@@ -56,17 +115,13 @@ public class ShoppingCart implements ProductOrder {
      * 
      * @see no.ntnu.tdt4100.IProduct
      */
-    // TODO: Implement the addItem method
-    // TODO: The parameters of the method should be in the following order:
+    // xTODO: Implement the addItem method
+    // xTODO: The parameters of the method should be in the following order:
     // product, quantity
-
     public void addItem(IProduct product, int quantity) {
         if (product == null || quantity < 1) throw new IllegalArgumentException();
-        if (cartMap.containsKey(product)) cartMap.put(product, cartMap.get(product) + quantity);
-        else cartMap.put(product, quantity);
+        this.shoppingCart.merge(product, 1, Integer::sum);
     }
-
-
 
     /**
      * Removes a quantity of a product from the shopping cart.
@@ -82,16 +137,21 @@ public class ShoppingCart implements ProductOrder {
      * 
      * @see no.ntnu.tdt4100.IProduct
      */
-    // TODO: Implement the removeItem method
-    // TODO: The parameters of the method should be in the following order:
+    // xTODO: Implement the removeItem method
+    // xTODO: The parameters of the method should be in the following order:
     // product, quantity
-
     public void removeItem(IProduct product, int quantity) {
-        if (product == null || quantity < 1) throw new IllegalArgumentException();
-        if (cartMap.containsKey(product)) cartMap.put(product, Math.max(cartMap.get(product) - quantity, 0));
-        if (cartMap.get(product) == 0) cartMap.remove(product);
+        if (product == null || !this.shoppingCart.containsKey(product) || quantity < 1) {
+            throw new IllegalArgumentException();
+        }
+        int diff = this.shoppingCart.get(product) - quantity;
+        if (diff <= 0) {
+            this.shoppingCart.remove(product);
+        }
+        else {
+            this.shoppingCart.put(product, diff);
+        }
     }
-
 
     /**
      * Adds a discount to the shopping cart. The shopping cart should be able to
@@ -104,14 +164,18 @@ public class ShoppingCart implements ProductOrder {
      * 
      * @see no.ntnu.tdt4100.ProductDiscount
      */
-    // TODO: Implement the addDiscount method
-
+    // xTODO: Implement the addDiscount method
     public void addDiscount(ProductDiscount discount) {
-        if (usedDiscounts.contains(discount)) throw new IllegalArgumentException();
-        for (IProduct product : cartMap.keySet()) {
-            if (discount.isApplicableTo(product)) discount.applyDiscount(product);
+        if (discount == null || getDiscounts().contains(discount)) throw new IllegalArgumentException();
+        for (Map.Entry<IProduct, Integer> entry : shoppingCart.entrySet()) { // assuming one can add the same discount to several products, just not different rounds
+            IProduct product = entry.getKey();
+            // int quantity = entry.getValue(); if needed in refinements
+            if (discount.isApplicableTo(product)) {
+                discountsAdded.add(discount);
+            }
         }
-        this.usedDiscounts.add(discount);
+        this.discountsUsed.add(discount);
+
     }
 
     /**
@@ -122,29 +186,10 @@ public class ShoppingCart implements ProductOrder {
      * @see no.ntnu.tdt4100.ProductDiscount
      */
     // TODO: Implement the getDiscounts method
-
-    public ArrayList<ProductDiscount> getDiscounts() {
-        return new ArrayList<>(this.usedDiscounts);
+    public List<ProductDiscount> getDiscounts() {
+        return this.discountsUsed;
     }
 
-    // TODO: Implement any other methods required by the ProductOrder interface
-    @Override
-    public Customer getCustomer() {
-        return this.customer;
-    }
+    // xTODO: Implement any other methods required by the ProductOrder interface
 
-    @Override
-    public Map<IProduct, Integer> getItems() {
-        return new HashMap<>(this.cartMap);
-    }
-
-    @Override
-    public double getTotal() {
-        double total = 0.0;
-        for (Map.Entry<IProduct, Integer> productEntry: cartMap.entrySet()) {
-            double price = productEntry.getKey().getPrice();
-            total += productEntry.getValue() * price;
-        }
-        return total;
-    }
 }

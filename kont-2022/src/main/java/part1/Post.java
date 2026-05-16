@@ -4,7 +4,9 @@ package part1;
  * Represents a position that must be visited as part of a race.
  */
 public class Post {
-
+	private double east;
+	private double north;
+	private int postNum;
 	// TODO: necessary fields and initialisation
 
 	/**
@@ -15,7 +17,9 @@ public class Post {
 	 * @param north the distance in north direction from a reference point
 	 */
 	public Post(final double east, final double north) {
-		// TODO: initialisation
+		this.east = east;
+		this.north = north;
+		this.postNum = -1;
 	}
 
 	/**
@@ -24,8 +28,8 @@ public class Post {
 	 */
 	@Override
 	public String toString() {
-		// TODO: return a suitable String
-		return "";
+		if (this.postNum == -1) return "postNum not assigned. Coordinates: (" + east + ", " + north + ")";
+		return "PostNum: " + postNum + ".  (" + east + ", " + north + ")";
 	}
 
 	// TODO: methods including getters og setters, that you find necessary and useful
@@ -38,23 +42,27 @@ public class Post {
 	 * @throws IllegalStateException if the post number is already set
 	 */
 	public void setPostNum(final int postNum) {
-		// TODO: correkt behaviour
+		if (postNum < 0) throw new IllegalArgumentException();
+		if (this.postNum != -1) throw new IllegalStateException();
+		this.postNum = postNum;
+	}
+
+	public int getPostNum() {
+		return this.postNum;
 	}
 
 	/**
 	 * @return the east coordinate of this Post
 	 */
 	public double getEast() {
-		// TODO - return correct value
-		return 0.0;
+		return this.east;
 	}
 
 	/**
 	 * @return the north coordinate of this Post
 	 */
 	public double getNorth() {
-		// TODO - return correct value
-		return 0.0;
+		return this.north;
 	}
 
 	/**
@@ -79,8 +87,7 @@ public class Post {
 	 * @return the distance between the post and the point
 	 */
 	public double distance(final double east, final double north) {
-		// TODO: return correct value
-		return 0.0;
+		return distance(getEast(), getNorth(), east, north);
 	}
 
 	/**
@@ -90,8 +97,7 @@ public class Post {
 	 * @return the distance between this and another post
 	 */
 	public double distance(final Post post2) {
-		// TODO: return correct value
-		return 0.0;
+		return distance(getEast(), getNorth(), post2.getEast(), post2.getNorth());
 	}
 
 	/**
@@ -103,8 +109,7 @@ public class Post {
 	 * @return the distance between the post and the point
 	 */
 	public static double distance(final Post post, final double east, final double north) {
-		// TODO: return correct value
-		return 0.0;
+		return distance(post.getEast(), post.getNorth(), east, north);
 	}
 
 	/**
@@ -115,8 +120,7 @@ public class Post {
 	 * @return the distance between the two posts
 	 */
 	public static double distance(final Post post1, final Post post2) {
-		// TODO: return correct value
-		return 0.0;
+		return distance(post1.getEast(), post1.getNorth(), post2.getEast(), post2.getNorth());
 	}
 
 	// sample main-method, for testing

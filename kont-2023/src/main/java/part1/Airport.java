@@ -1,15 +1,19 @@
 package part1;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+// import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import shared.Flight;
 import shared.IAirport;
 import shared.IFlight;
 
 public class Airport implements IAirport {
-
-    // TODO - add your fields here
+    private String name;
+    private String IATACode;
+    private List<IFlight> flights = new ArrayList<>();
 
     /**
      * Constructor for Airport class.
@@ -18,7 +22,9 @@ public class Airport implements IAirport {
      * @param IATACode The IATA code of the airport.
      */
     public Airport(String name, String IATACode) {
-        // TODO - write your code here.
+        if (name == null || IATACode == null) throw new IllegalArgumentException("Can not initiate with null args");
+        this.name = name;
+        this.IATACode = IATACode;
     }
 
     /**
@@ -28,8 +34,7 @@ public class Airport implements IAirport {
      */
     @Override
     public String getName() {
-        // TODO - write your code here.
-        return null;
+        return this.name;
     }
 
     /**
@@ -39,8 +44,7 @@ public class Airport implements IAirport {
      */
     @Override
     public String getIATACode() {
-        // TODO - write your code here.
-        return null;
+        return this.IATACode;
     }
 
     /**
@@ -50,8 +54,7 @@ public class Airport implements IAirport {
      */
     @Override
     public List<IFlight> getFlights() {
-        // TODO - write your code here.
-        return null;
+        return this.flights;
     }
 
     /**
@@ -63,7 +66,8 @@ public class Airport implements IAirport {
      */
     @Override
     public void addFlight(IFlight flight) {
-        // TODO - write your code here.
+       if (flight == null || this.flights.contains(flight)) throw new IllegalArgumentException("Cannot add null flight");
+       this.flights.add(flight);
     }
 
     /**
@@ -73,7 +77,8 @@ public class Airport implements IAirport {
      */
     @Override
     public void removeFlight(IFlight flight) {
-        // TODO - write your code here.
+        if (flight == null || !this.flights.contains(flight)) return;
+        this.flights.remove(flight);
     }
 
     /**
@@ -83,8 +88,7 @@ public class Airport implements IAirport {
      */
     @Override
     public int getTotalFlights() {
-        // TODO - write your code here.
-        return 0;
+        return this.flights.size();
     }
 
     /**
@@ -95,8 +99,9 @@ public class Airport implements IAirport {
      */
     @Override
     public List<IFlight> getFlightsByDestination(String destination) {
-        // TODO - write your code here.
-        return null;
+        return this.flights.stream()
+            .filter(f -> f.getDestination().equals(destination))
+            .collect(Collectors.toList()); // check destination of each flight in the list filter on the sec. dest.
     }
 
     public static void main(String[] args) {

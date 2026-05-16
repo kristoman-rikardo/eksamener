@@ -1,7 +1,12 @@
 package com.shopstore.retail.part4;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 import no.ntnu.tdt4100.Product;
 import no.ntnu.tdt4100.part4.ResultSet;
 
@@ -38,10 +43,14 @@ public class InventoryDataReader {
      * @see Product#Product(int, String, String, double, String)
      */
     public static Product parseProductLine(String productLine, String splitRegexp) {
-        // TODO: Implement the method according to the description in the JavaDoc
-        return null; // This line is only here to make the code compile. Please note however, that in
-                     // your implementation, the method should return null if the data could not be
-                     // parsed into a Product
+        try {
+            String[] parts = productLine.split(splitRegexp);
+            if (parts.length != 6) return null;
+            Product product = new Product(Integer.valueOf(parts[0]), parts[1], parts[2], Double.valueOf(parts[3]), parts[5]);
+            return product;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -77,9 +86,24 @@ public class InventoryDataReader {
      * @see ResultSet
      * @see Product
      */
-    public static ResultSet read(InputStream stream) {
-        // TODO: Implement the method according to the description in the JavaDoc
-        return null; // This line is only here to make the code compile, you should remove it when
-                     // you implement the method
+    public static ResultSet read(InputStream stream) throws IOException {
+        List<Product> products = new ArrayList<>();
+        List<Integer> linesWithErrors = new ArrayList<>();
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            reader.readLine();
+            String productLine;
+            int i = 2;
+            while((productLine = reader.readLine()) != null) {
+                Product product = parseProductLine(productLine, CSV_SPLIT_REGEX);
+                if (product == null) {
+                    linesWithErrors.add(i);
+                }
+                else {
+                    products.add(product);
+                }
+                i++;
+            }
+        }
+        return new ResultSet(products, linesWithErrors);
     }
 }

@@ -1,9 +1,12 @@
 package com.shopstore.retail.part5;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import no.ntnu.tdt4100.Customer;
 import no.ntnu.tdt4100.IProduct;
 import no.ntnu.tdt4100.ProductOrder;
 import no.ntnu.tdt4100.Shipment;
@@ -44,8 +47,11 @@ import no.ntnu.tdt4100.part5.ProductInventory;
  * @see ProductChangeListener
  * @see ProductInventory
  */
-public class OrderInProcessing {
-
+public class OrderInProcessing implements ProductChangeListener, ProductOrder {
+    private ProductOrder productOrder;
+    private ProductInventory productInventory;
+    private Map<IProduct, Integer> unshippedProducts;
+    private List<Shipment> shipments = new ArrayList<>();
     // TODO: Add the necessary fields to store the order and inventory information,
     // as well as the shipments and unshipped products
 
@@ -68,6 +74,17 @@ public class OrderInProcessing {
      *
      */
     public OrderInProcessing(ProductOrder productOrder, ProductInventory productInventory) {
+        this.productOrder = productOrder;
+        this.unshippedProducts = new HashMap<>(productOrder.getItems());
+        this.productInventory = productInventory;
+    }
+
+    @Override
+    public void productChanged(IProduct product, ProductChange productChange) {
+        if (!isCompleted() && unshippedProducts.containsKey(product) && productChange.equals(ProductChange.NOW_AVAILABLE)) createShipment();
+        else {
+            productInventory.removeListener(this);
+        }
     }
 
     /**
@@ -76,9 +93,7 @@ public class OrderInProcessing {
      * @return A {@link List} of {@link Shipment} objects.
      */
     public List<Shipment> getShipments() {
-        // TODO: Implement the getShipments method
-        return null; // This line is a placeholder, you should remove it when you implement the
-                     // method
+        return this.shipments;
     }
 
     /**
@@ -90,9 +105,7 @@ public class OrderInProcessing {
      *         the order have been shipped, and {@code false} otherwise.
      */
     public boolean isCompleted() {
-        // TODO: Implement the isCompleted method
-        return false; // This line is a placeholder, you should remove it when you implement the
-                      // method
+        return (this.unshippedProducts.size() < 1); // when there no longer is any unshipped products, the shipment is complete
     }
 
     /**
@@ -132,7 +145,44 @@ public class OrderInProcessing {
      * @see ProductInventory#getStock(IProduct)
      */
     public void createShipment() {
-        // TODO: Implement the createShipment method
+        Map<IProduct, Integer> unshippedCopy = new HashMap<>(this.unshippedProducts);
+        Map<IProduct, Integer> productsContained = new HashMap<>();
+        boolean anyShipped = false;
+        for (Map.Entry<IProduct, Integer> entry : unshippedCopy.entrySet()) {
+            IProduct product = entry.getKey();
+            int nOrdered = entry.getValue();
+            int stock = this.productInventory.getStock(product);
+            if (stock == 0) continue;
+            else if (stock - nOrdered >= 0) { // sufficient supply in inventory
+                this.unshippedProducts.remove(product); // order of this product fulfilled
+                productsContained.put(product, nOrdered);
+                anyShipped = true;
+                // this.productInventory.reduceStock(product, nOrdered); // TODO: unsure here
+            }
+            else { // demand > supply
+                this.unshippedProducts.put(product, nOrdered - stock); 
+                if (this.unshippedProducts.get(product) <= 0) this.unshippedProducts.remove(product);
+                productsContained.put(product, stock);
+                anyShipped = true;
+                // this.productInventory.reduceStock(product, stock); // TODO: still dunno what to do here
+            }
+        }
+        if (anyShipped) this.shipments.add(new Shipment(new Shipment().id(), new Shipment().createdDateTime(), productsContained, new ArrayList<>()));
+    }
+
+    @Override 
+    public double getTotal() {
+        return this.productOrder.getTotal();
+    }
+
+    @Override
+    public Customer getCustomer() {
+        return this.productOrder.getCustomer();
+    }
+
+    @Override
+    public Map<IProduct, Integer> getItems() {
+        return this.productOrder.getItems();
     }
 
     /**
@@ -154,7 +204,8 @@ public class OrderInProcessing {
      * @see ProductInventory#addListener(ProductChangeListener)
      */
     public void createInitialShipment() {
-        // TODO: Implement the createInitialShipment method
+        createShipment();
+        if (!isCompleted()) this.productInventory.addListener(this);
     }
 
     // TODO: Implement any other required methods from the ProductOrder and

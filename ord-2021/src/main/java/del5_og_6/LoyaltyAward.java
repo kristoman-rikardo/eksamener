@@ -5,7 +5,7 @@ public abstract class LoyaltyAward {
 	private String awardName;
 
 	public LoyaltyAward(String awardName) {
-		this.setAwardName(awardName);
+		// this.setAwardName(awardName);
 	}
 
 	/**

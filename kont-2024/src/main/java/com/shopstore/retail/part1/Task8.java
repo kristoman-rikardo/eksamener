@@ -74,9 +74,7 @@ public class Task8 extends AbstractTask8 {
         Task8 x = new Task8();
         x.doubleToInt(2);
         x.doubleToInt(-0.99);
-        x.charMultiply('a', '\0');
-        System.out.println(x.varargsToList().size());
-        System.out.println("a".equals(x.charToString('a')));
+        System.out.println(x.charMultiply('\0', 'a'));
+        System.out.println(x.varargsToList());
     }
-
 }

@@ -31,12 +31,10 @@ public class Task4 {
     public static void main(String[] args) {
         // You can use this main method to test the method if you like, but it is not required
         IProduct product1 = new Product(1, "Product 1", "Description 1", 100.0, "Vendor 1");
-        IProduct product3 = new Product(3, "Product 1", "Description 1", 100.0, "Vendor 1");
-        IProduct product2 = new Product(2, "Product 1", "Description 1", 100.0, "Vendor 1");
+        IProduct product2 = new Product(2, "Product 2", "Description 1", 120.0, "Vendor 1");   
         Task4 task4 = new Task4();
-        System.out.println(task4.getTotalPriceWithShipping(List.of(product1, product2, product3), 0));
-        System.out.println(task4.getTotalPriceWithShipping(List.of(), 10));
-
+        double d = task4.getTotalPriceWithShipping(List.of(product1, product2), 2);     
+        System.out.println(d);
         // Any other testing code can go here...
     }
 }

@@ -3,6 +3,8 @@ package com.shopstore.retail.part3;
 import java.util.Collection;
 import java.util.HashSet;
 
+import no.ntnu.tdt4100.IProduct;
+
 /**
  * Represents a product category within a hierarchy.
  * A category can have a single parent category, and any number of children. The
@@ -22,6 +24,7 @@ public class ProductCategory {
     Collection<ProductCategory> children = new HashSet<>();
 
     private String name;
+    Collection<IProduct> products = new HashSet<>();
     // TODO Add any additional fields you might need.
 
     /**
@@ -57,6 +60,14 @@ public class ProductCategory {
      * @see ProductCategory#parent
      */
     // TODO: Implement the isDescendantOf method
+    public boolean isDescendantOf(ProductCategory productCategory) {
+        ProductCategory candidate = this;
+        while (candidate != null) {
+            if (candidate.parent == productCategory) return true;
+            candidate = candidate.parent;
+        }
+        return (candidate != null); // if we got to the top without finding the param,this is not a descendant
+    }
 
     /**
      * Adds <code>productCategory</code> to <code>this</code> category's list of
@@ -75,6 +86,11 @@ public class ProductCategory {
      * @see ProductCategory#parent
      */
     // TODO: Implement the addChildCategory method
+    public void addChildCategory(ProductCategory productCategory) {
+        if (productCategory == null || this == productCategory || this.isDescendantOf(productCategory)) throw new IllegalArgumentException(); // TODO: .equals or ==?
+        this.children.add(productCategory);
+        productCategory.parent = this;
+    }
 
     /**
      * Removes <code>productCategory</code> from <code>this</code> category's
@@ -94,6 +110,11 @@ public class ProductCategory {
      * @see ProductCategory#parent
      */
     // TODO: Implement the removeChildCategory method
+    public void removeChildCategory(ProductCategory productCategory) {
+        if (productCategory == null || !this.children.contains(productCategory)) throw new IllegalArgumentException();
+        this.children.remove(productCategory);
+        productCategory.parent = null;
+    }
 
     /**
      * Adds a product to <code>this</code> category's list of products
@@ -101,6 +122,9 @@ public class ProductCategory {
      * @param product The product to add, of type {@link IProduct}.
      */
     // TODO: Implement the addProduct method
+    public void addProduct(IProduct product) {
+        this.products.add(product);
+    }
 
     /**
      * Returns a {@link Collection} of all products in the category. This should
@@ -116,5 +140,13 @@ public class ProductCategory {
      * @see Collection#addAll(Collection)
      */
     // TODO: Implement the getAllProducts method
+    public Collection<IProduct> getAllProducts() {
+        Collection<IProduct> allProducts = new HashSet<>();
+        allProducts.addAll(this.products);
+        for (ProductCategory child : this.children) {
+            allProducts.addAll(child.getAllProducts());
+        }
+        return allProducts;
+    }
 
 }

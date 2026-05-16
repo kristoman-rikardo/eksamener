@@ -46,20 +46,30 @@ public interface RouteFactory {
 	// RouteFactories
 
 	/**
-	 * Generates a route that visits all the posts provided in the order of 
+	 * Generates a route that visits all the posts provided in the order of
 	 * start -> all posts in the between list in order -> finish
 	 */
 	public final static RouteFactory ALL_POSTS_IN_ORDER = (start, between, finish) -> {
-		// TODO
-		return null;
+		List<Post> posts = new java.util.ArrayList<>();
+		posts.add(start);
+		posts.addAll(between);
+		posts.add(finish);
+		return new Route(posts);
 	};
 
 	/**
-	 * Generates a route that visits all the posts provided in the order of 
+	 * Generates a route that visits all the posts provided in the order of
 	 * start -> all posts in the between list in reverse order -> finish
 	 */
-	// TODO
-	public final static RouteFactory ALL_POSTS_REVERSED = null;
+	public final static RouteFactory ALL_POSTS_REVERSED = (start, between, finish) -> {
+		List<Post> posts = new java.util.ArrayList<>();
+		posts.add(start);
+		List<Post> reversed = new java.util.ArrayList<>(between);
+		java.util.Collections.reverse(reversed);
+		posts.addAll(reversed);
+		posts.add(finish);
+		return new Route(posts);
+	};
 
 	// for own testing
 	public static void main(final String[] args) {
